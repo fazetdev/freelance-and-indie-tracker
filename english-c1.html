@@ -1,12 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English C1 Freelance Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --background-color: #ecf0f1;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #7f8c8d;
+            --border-color: #bdc3c7;
+            --progress-bar-color: #27ae60;
+            --progress-bar-bg: #e8f6e8;
+            --accent-color: #3498db;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: auto;
+            background: var(--card-background);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--light-text-color);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--progress-bar-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            height: 15px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--progress-bar-color);
+            transition: width 0.4s ease-in-out;
+            border-radius: 15px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+        }
+
+        .phase {
+            margin-bottom: 3rem;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .phase-header h2 {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .week-card {
+            background-color: #fcfcfc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .week-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: var(--accent-color);
+            color: #fff;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .week-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .week-tracker {
+            display: flex;
+            align-items: center;
+        }
+
+        .week-progress-container {
+            width: 120px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+
+        .week-progress-bar {
+            background-color: #fff;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .week-progress-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .dropdown-icon {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .week-card.open .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        .week-content {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+
+        .week-card.open .week-content {
+            max-height: 1000px; /* Adjust as needed */
+            padding: 1.5rem 2rem;
+        }
+
+        .week-content h4 {
+            color: var(--primary-color);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-color);
+            border-radius: 5px;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: background-color 0.3s;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: var(--progress-bar-color);
+            border-color: var(--progress-bar-color);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+
+    <div class="container">
+        <h1>20-Week English C1 Freelance Plan</h1>
+        <p class="subtitle">From Core Foundations to Freelance Readiness</p>
+
+        <div class="progress-container">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="main-progress-bar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-text" id="main-progress-text">0% Complete</div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 1: Core Foundations (Weeks 1-6)</h2></div>
+            <div class="week-card" data-week-id="1">
+                <div class="week-header">
+                    <h3>Week 1-2: Greetings & Basics</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Build grammar/vocab for freelance basics.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="1-1"><label><input type="checkbox"> Grammar (present perfect vs. past simple, articles).</label></li>
+                        <li data-task-id="1-2"><label><input type="checkbox"> Vocab (100 words, e.g., “Dear Client,” “invoice”).</label></li>
+                        <li data-task-id="1-3"><label><input type="checkbox"> Write mini-proposal (100 words).</label></li>
+                        <li data-task-id="1-4"><label><input type="checkbox"> Record 1-min introduction.</label></li>
+                        <li data-task-id="1-5"><label><input type="checkbox"> Listen to TED Talk.</label></li>
+                        <li data-task-id="1-6"><label><input type="checkbox"> Practice greeting phrases.</label></li>
+                        <li data-task-id="1-7"><label><input type="checkbox"> Italki session: Introduction practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="2">
+                <div class="week-header">
+                    <h3>Week 3-4: Persuasion</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Master the art of persuasion in writing.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="2-1"><label><input type="checkbox"> Grammar (conditionals).</label></li>
+                        <li data-task-id="2-2"><label><input type="checkbox"> Vocab (100 words, e.g., “reliable”).</label></li>
+                        <li data-task-id="2-3"><label><input type="checkbox"> Write Upwork profile (150 words).</label></li>
+                        <li data-task-id="2-4"><label><input type="checkbox"> Record 1-min pitch.</label></li>
+                        <li data-task-id="2-5"><label><input type="checkbox"> Watch pitch video.</label></li>
+                        <li data-task-id="2-6"><label><input type="checkbox"> Italki session: Pitch practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="3">
+                <div class="week-header">
+                    <h3>Week 5-6: Client Updates</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Communicate with clients effectively.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="3-1"><label><input type="checkbox"> Grammar (reported speech).</label></li>
+                        <li data-task-id="3-2"><label><input type="checkbox"> Vocab (100 words, e.g., “milestone”).</label></li>
+                        <li data-task-id="3-3"><label><input type="checkbox"> Write client email (100 words).</label></li>
+                        <li data-task-id="3-4"><label><input type="checkbox"> Practice 1-min call script.</label></li>
+                        <li data-task-id="3-5"><label><input type="checkbox"> Watch tutorial.</label></li>
+                        <li data-task-id="3-6"><label><input type="checkbox"> Italki session: Call practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 2: Professional Communication (Weeks 7-12)</h2></div>
+            <div class="week-card" data-week-id="4">
+                <div class="week-header">
+                    <h3>Week 7-8: Negotiation</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Master negotiation skills.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="4-1"><label><input type="checkbox"> Grammar (modals).</label></li>
+                        <li data-task-id="4-2"><label><input type="checkbox"> Vocab (100 words, e.g., “pricing”).</label></li>
+                        <li data-task-id="4-3"><label><input type="checkbox"> Write negotiation email (150 words).</label></li>
+                        <li data-task-id="4-4"><label><input type="checkbox"> Record 2-min negotiation role-play.</label></li>
+                        <li data-task-id="4-5"><label><input type="checkbox"> Listen to podcast.</label></li>
+                        <li data-task-id="4-6"><label><input type="checkbox"> Italki session: Negotiation practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="5">
+                <div class="week-header">
+                    <h3>Week 9-10: Proposals</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Create compelling proposals.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="5-1"><label><input type="checkbox"> Grammar (connectors).</label></li>
+                        <li data-task-id="5-2"><label><input type="checkbox"> Vocab (100 words, e.g., “deliverable”).</label></li>
+                        <li data-task-id="5-3"><label><input type="checkbox"> Write proposal (200 words).</label></li>
+                        <li data-task-id="5-4"><label><input type="checkbox"> Record 2-min explanation.</label></li>
+                        <li data-task-id="5-5"><label><input type="checkbox"> Watch Gulf interview.</label></li>
+                        <li data-task-id="5-6"><label><input type="checkbox"> Italki session: Proposal review.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="6">
+                <div class="week-header">
+                    <h3>Week 11-12: Feedback Handling</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Handle feedback professionally.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="6-1"><label><input type="checkbox"> Grammar (polite responses, passive voice).</label></li>
+                        <li data-task-id="6-2"><label><input type="checkbox"> Vocab (review 100 words, e.g., “feedback”).</label></li>
+                        <li data-task-id="6-3"><label><input type="checkbox"> Write feedback email (100 words).</label></li>
+                        <li data-task-id="6-4"><label><input type="checkbox"> Practice 2-min discussion.</label></li>
+                        <li data-task-id="6-5"><label><input type="checkbox"> Italki session: Feedback role-play.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 3: Freelance Readiness & C1 Polish (Weeks 13-20)</h2></div>
+            <div class="week-card" data-week-id="7">
+                <div class="week-header">
+                    <h3>Week 13-14: Profile & Pitch</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Finalize assets for freelancing.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="7-1"><label><input type="checkbox"> Grammar (relative clauses).</label></li>
+                        <li data-task-id="7-2"><label><input type="checkbox"> Vocab (review 100 words, e.g., “contract”).</label></li>
+                        <li data-task-id="7-3"><label><input type="checkbox"> Write polished Upwork profile (200 words).</label></li>
+                        <li data-task-id="7-4"><label><input type="checkbox"> Record 2-min bilingual pitch video (Arabic/English).</label></li>
+                        <li data-task-id="7-5"><label><input type="checkbox"> Analyze 5 Gulf postings.</label></li>
+                        <li data-task-id="7-6"><label><input type="checkbox"> Italki session: Pitch practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="8">
+                <div class="week-header">
+                    <h3>Week 15-16: Client Cycle & Platform</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Simulate a full freelance project.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="8-1"><label><input type="checkbox"> Grammar (future continuous).</label></li>
+                        <li data-task-id="8-2"><label><input type="checkbox"> Simulate proposal → email → delivery.</label></li>
+                        <li data-task-id="8-3"><label><input type="checkbox"> Practice 2-min call.</label></li>
+                        <li data-task-id="8-4"><label><input type="checkbox"> Write Mostaql proposal.</label></li>
+                        <li data-task-id="8-5"><label><input type="checkbox"> Italki session: Client cycle role-play.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="9">
+                <div class="week-header">
+                    <h3>Week 17-18: Portfolio Integration</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Integrate English skills with portfolio.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="9-1"><label><input type="checkbox"> Grammar (mixed conditionals).</label></li>
+                        <li data-task-id="9-2"><label><input type="checkbox"> Write bilingual UI/UX case study.</label></li>
+                        <li data-task-id="9-3"><label><input type="checkbox"> Update portfolio site with English text.</label></li>
+                        <li data-task-id="9-4"><label><input type="checkbox"> Revise case study.</label></li>
+                        <li data-task-id="9-5"><label><input type="checkbox"> Italki session: Case study review.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="10">
+                <div class="week-header">
+                    <h3>Week 19-20: Final Polish & C1 Test</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Take the final steps to C1 proficiency.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="10-1"><label><input type="checkbox"> Grammar (subjunctive).</label></li>
+                        <li data-task-id="10-2"><label><input type="checkbox"> Revise top 5 mistakes.</label></li>
+                        <li data-task-id="10-3"><label><input type="checkbox"> Add 50 advanced words.</label></li>
+                        <li data-task-id="10-4"><label><input type="checkbox"> Submit 2 polished texts.</label></li>
+                        <li data-task-id="10-5"><label><input type="checkbox"> Record 3-min investor pitch.</label></li>
+                        <li data-task-id="10-6"><label><input type="checkbox"> Take C1 test (EF SET).</label></li>
+                        <li data-task-id="10-7"><label><input type="checkbox"> Italki session: Investor pitch practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const weeks = document.querySelectorAll('.week-card');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const mainProgressBar = document.getElementById('main-progress-bar');
+            const mainProgressText = document.getElementById('main-progress-text');
+
+            loadState();
+
+            weeks.forEach(week => {
+                week.querySelector('.week-header').addEventListener('click', () => {
+                    week.classList.toggle('open');
+                });
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateProgress();
+                    saveState();
+                });
+            });
+
+            updateProgress();
+
+            function updateProgress() {
+                weeks.forEach(week => {
+                    const weekCheckboxes = week.querySelectorAll('input[type="checkbox"]');
+                    const totalTasks = weekCheckboxes.length;
+                    if (totalTasks === 0) return;
+
+                    const completedTasks = Array.from(weekCheckboxes).filter(cb => cb.checked).length;
+                    const percentage = (completedTasks / totalTasks) * 100;
+
+                    const progressBar = week.querySelector('.week-progress-bar');
+                    const progressText = week.querySelector('.week-progress-text');
+                    progressBar.style.width = `${percentage}%`;
+                    progressText.textContent = `${Math.round(percentage)}%`;
+                });
+
+                const totalTasks = checkboxes.length;
+                const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const mainPercentage = (completedTasks / totalTasks) * 100;
+                
+                mainProgressBar.style.width = `${mainPercentage}%`;
+                mainProgressText.textContent = `${Math.round(mainPercentage)}% Complete`;
+            }
+
+            function saveState() {
+                const state = {};
+                checkboxes.forEach(checkbox => {
+                    const taskListItem = checkbox.closest('li');
+                    if (taskListItem) {
+                        const taskId = taskListItem.dataset.taskId;
+                        if (taskId) {
+                            state[taskId] = checkbox.checked;
+                        }
+                    }
+                });
+                localStorage.setItem('freelancePlanState', JSON.stringify(state));
+            }
+
+            function loadState() {
+                const storedState = localStorage.getItem('freelancePlanState');
+                if (storedState) {
+                    const state = JSON.parse(storedState);
+                    checkboxes.forEach(checkbox => {
+                        const taskListItem = checkbox.closest('li');
+                        if (taskListItem) {
+                            const taskId = taskListItem.dataset.taskId;
+                            if (taskId && state[taskId]) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>

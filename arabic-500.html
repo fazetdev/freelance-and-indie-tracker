@@ -1,12 +1,558 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Freelance Plan Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2e8b57; /* Sea Green */
+            --secondary-color: #3cb371; /* Medium Sea Green */
+            --brown-color: #8b4513; /* Saddle Brown */
+            --light-brown-color: #a0522d; /* Sienna */
+            --background-color: #f5f5dc; /* Beige */
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #666;
+            --border-color: #d2b48c; /* Tan */
+            --progress-bar-color: #556b2f; /* Dark Olive Green */
+            --progress-bar-bg: #e0e8d0;
+            --accent-color: #20b2aa; /* Light Sea Green */
+        }
+
+        body {
+            font-family: 'Roboto', 'Tajawal', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: auto;
+            background: var(--card-background);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--brown-color);
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--light-text-color);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--progress-bar-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            height: 15px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--progress-bar-color);
+            transition: width 0.4s ease-in-out;
+            border-radius: 15px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--brown-color);
+            margin-top: 0.5rem;
+        }
+
+        .phase {
+            margin-bottom: 3rem;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .phase-header h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .week-card {
+            background-color: #fcfcfc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .week-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: var(--accent-color);
+            color: #fff;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .week-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .week-tracker {
+            display: flex;
+            align-items: center;
+        }
+
+        .week-progress-container {
+            width: 120px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+
+        .week-progress-bar {
+            background-color: #fff;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .week-progress-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .dropdown-icon {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .week-card.open .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        .week-content {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+
+        .week-card.open .week-content {
+            max-height: 1000px;
+            padding: 1.5rem 2rem;
+        }
+
+        .week-content h4 {
+            color: var(--brown-color);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: background-color 0.3s;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: var(--progress-bar-color);
+            border-color: var(--progress-bar-color);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+
+    <div class="container">
+        <h1>Arabic Freelance Plan Tracker</h1>
+        <p class="subtitle">A Journey to Professional Arabic Communication</p>
+
+        <div class="progress-container">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="main-progress-bar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-text" id="main-progress-text">0% Complete</div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 1: Foundations (Weeks 1-4)</h2></div>
+            <div class="week-card" data-week-id="1">
+                <div class="week-header">
+                    <h3>Week 1-2: Greetings & Basics</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Master 150 words, 20 freelance phrases for greetings/etiquette.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="1-1"><label><input type="checkbox"> Vocab (40 words, e.g., “السلام عليكم”).</label></li>
+                        <li data-task-id="1-2"><label><input type="checkbox"> Phrases (3 greetings, e.g., “تشرفنا”).</label></li>
+                        <li data-task-id="1-3"><label><input type="checkbox"> Read 5 postings, extract 5 phrases.</label></li>
+                        <li data-task-id="1-4"><label><input type="checkbox"> Write 50-word intro email.</label></li>
+                        <li data-task-id="1-5"><label><input type="checkbox"> Record 30-sec intro.</label></li>
+                        <li data-task-id="1-6"><label><input type="checkbox"> Cultural tip (“سيد أحمد”).</label></li>
+                        <li data-task-id="1-7"><label><input type="checkbox"> Italki: intro practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="2">
+                <div class="week-header">
+                    <h3>Week 3-4: Etiquette & Politeness</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Build on etiquette and politeness phrases.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="2-1"><label><input type="checkbox"> Vocab (40 words, e.g., “من فضلك”).</label></li>
+                        <li data-task-id="2-2"><label><input type="checkbox"> Phrases (3 etiquette phrases, e.g., “أقدر وقتك”).</label></li>
+                        <li data-task-id="2-3"><label><input type="checkbox"> Read 5 postings, extract 5 phrases.</label></li>
+                        <li data-task-id="2-4"><label><input type="checkbox"> Write 50-word thank-you email.</label></li>
+                        <li data-task-id="2-5"><label><input type="checkbox"> Record 30-sec polite response.</label></li>
+                        <li data-task-id="2-6"><label><input type="checkbox"> Cultural tip (“إن شاء الله”).</label></li>
+                        <li data-task-id="2-7"><label><input type="checkbox"> Italki: response practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 2: Freelance Phrases Expansion (Weeks 5-12)</h2></div>
+            <div class="week-card" data-week-id="3">
+                <div class="week-header">
+                    <h3>Week 5-6: Greetings & Project Terms</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Build 250–300 phrases for professional communication.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="3-1"><label><input type="checkbox"> Vocab (40 words, e.g., “مشروع”).</label></li>
+                        <li data-task-id="3-2"><label><input type="checkbox"> Phrases (5 project phrases, e.g., “تصميم سريع الاستجابة”).</label></li>
+                        <li data-task-id="3-3"><label><input type="checkbox"> Write 75-word project description.</label></li>
+                        <li data-task-id="3-4"><label><input type="checkbox"> Record 1-min project pitch.</label></li>
+                        <li data-task-id="3-5"><label><input type="checkbox"> Observe Telegram group, copy 5 phrases.</label></li>
+                        <li data-task-id="3-6"><label><input type="checkbox"> Cultural tip (mutual benefit).</label></li>
+                        <li data-task-id="3-7"><label><input type="checkbox"> Italki: pitch practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="4">
+                <div class="week-header">
+                    <h3>Week 7-8: Pricing & Negotiation</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Learn pricing and negotiation phrases.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="4-1"><label><input type="checkbox"> Vocab (40 words, e.g., “سعر”).</label></li>
+                        <li data-task-id="4-2"><label><input type="checkbox"> Phrases (5 negotiation phrases, e.g., “هل يمكن مناقشة الميزانية؟”).</label></li>
+                        <li data-task-id="4-3"><label><input type="checkbox"> Read 5 postings, extract 5 phrases.</label></li>
+                        <li data-task-id="4-4"><label><input type="checkbox"> Write 75-word negotiation email.</label></li>
+                        <li data-task-id="4-5"><label><input type="checkbox"> Record 1-min negotiation role-play.</label></li>
+                        <li data-task-id="4-6"><label><input type="checkbox"> Cultural tip (avoid direct refusals).</label></li>
+                        <li data-task-id="4-7"><label><input type="checkbox"> Italki: negotiation practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="5">
+                <div class="week-header">
+                    <h3>Week 9-10: Deadlines & Updates</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Practice communication about deadlines and updates.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="5-1"><label><input type="checkbox"> Vocab (40 words, e.g., “جدول”).</label></li>
+                        <li data-task-id="5-2"><label><input type="checkbox"> Phrases (5 deadline phrases, e.g., “سأحترم الموعد النهائي”).</label></li>
+                        <li data-task-id="5-3"><label><input type="checkbox"> Write 75-word update email.</label></li>
+                        <li data-task-id="5-4"><label><input type="checkbox"> Record 1-min update call.</label></li>
+                        <li data-task-id="5-5"><label><input type="checkbox"> Observe Discord group, copy 5 phrases.</label></li>
+                        <li data-task-id="5-6"><label><input type="checkbox"> Cultural tip (proactive updates).</label></li>
+                        <li data-task-id="5-7"><label><input type="checkbox"> Italki: update practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="6">
+                <div class="week-header">
+                    <h3>Week 11-12: Technical Terms</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Expand technical vocabulary for UI/UX.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="6-1"><label><input type="checkbox"> Vocab (40 words, e.g., “واجهة مستخدم”).</label></li>
+                        <li data-task-id="6-2"><label><input type="checkbox"> Phrases (5 tech phrases, e.g., “التطبيق سهل الاستخدام”).</label></li>
+                        <li data-task-id="6-3"><label><input type="checkbox"> Read 5 postings, extract 5 phrases.</label></li>
+                        <li data-task-id="6-4"><label><input type="checkbox"> Write 100-word app description.</label></li>
+                        <li data-task-id="6-5"><label><input type="checkbox"> Record 1-min tech pitch.</label></li>
+                        <li data-task-id="6-6"><label><input type="checkbox"> Cultural tip (highlight RTL designs).</label></li>
+                        <li data-task-id="6-7"><label><input type="checkbox"> Italki: tech pitch practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 3: Confidence & Application (Weeks 13-18)</h2></div>
+            <div class="week-card" data-week-id="7">
+                <div class="week-header">
+                    <h3>Week 13-14: Project Briefs & Feedback</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Apply phrases to client scenarios.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="7-1"><label><input type="checkbox"> Vocab (15 words, e.g., “ملاحظات”).</label></li>
+                        <li data-task-id="7-2"><label><input type="checkbox"> Phrases (5 feedback phrases, e.g., “سأدمج اقتراحاتك”).</label></li>
+                        <li data-task-id="7-3"><label><input type="checkbox"> Write 75-word feedback email.</label></li>
+                        <li data-task-id="7-4"><label><input type="checkbox"> Record 1-min feedback role-play.</label></li>
+                        <li data-task-id="7-5"><label><input type="checkbox"> Post Arabic caption on X.</label></li>
+                        <li data-task-id="7-6"><label><input type="checkbox"> Cultural tip (gratitude for feedback).</label></li>
+                        <li data-task-id="7-7"><label><input type="checkbox"> Italki: feedback practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="8">
+                <div class="week-header">
+                    <h3>Week 15-16: Portfolio & Proposals</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Showcase work with Arabic phrases.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="8-1"><label><input type="checkbox"> Vocab (review 15 words, e.g., “محفظة”).</label></li>
+                        <li data-task-id="8-2"><label><input type="checkbox"> Phrases (5 portfolio phrases, e.g., “هذا يعرض عملي”).</label></li>
+                        <li data-task-id="8-3"><label><input type="checkbox"> Write 100-word proposal.</label></li>
+                        <li data-task-id="8-4"><label><input type="checkbox"> Write bilingual UI/UX case study.</label></li>
+                        <li data-task-id="8-5"><label><input type="checkbox"> Post caption on LinkedIn.</label></li>
+                        <li data-task-id="8-6"><label><input type="checkbox"> Cultural tip (highlight Gulf designs).</label></li>
+                        <li data-task-id="8-7"><label><input type="checkbox"> Italki: proposal practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="9">
+                <div class="week-header">
+                    <h3>Week 17-18: Client Cycle & Test Gig</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Simulate a client project from start to finish.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="9-1"><label><input type="checkbox"> Vocab (review 10 words, e.g., “صفقة”).</label></li>
+                        <li data-task-id="9-2"><label><input type="checkbox"> Phrases (5 sign-off phrases, e.g., “شكراً على ثقتكم”).</label></li>
+                        <li data-task-id="9-3"><label><input type="checkbox"> Write 100-word client cycle.</label></li>
+                        <li data-task-id="9-4"><label><input type="checkbox"> Record 2-min bilingual pitch video.</label></li>
+                        <li data-task-id="9-5"><label><input type="checkbox"> Practice mock client chat with Grok.</label></li>
+                        <li data-task-id="9-6"><label><input type="checkbox"> Offer $5–10 test gig on Mostaql.</label></li>
+                        <li data-task-id="9-7"><label><input type="checkbox"> Italki: pitch practice.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const weeks = document.querySelectorAll('.week-card');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const mainProgressBar = document.getElementById('main-progress-bar');
+            const mainProgressText = document.getElementById('main-progress-text');
+
+            loadState();
+
+            weeks.forEach(week => {
+                week.querySelector('.week-header').addEventListener('click', () => {
+                    week.classList.toggle('open');
+                });
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateProgress();
+                    saveState();
+                });
+            });
+
+            updateProgress();
+
+            function updateProgress() {
+                weeks.forEach(week => {
+                    const weekCheckboxes = week.querySelectorAll('input[type="checkbox"]');
+                    const totalTasks = weekCheckboxes.length;
+                    if (totalTasks === 0) return;
+
+                    const completedTasks = Array.from(weekCheckboxes).filter(cb => cb.checked).length;
+                    const percentage = (completedTasks / totalTasks) * 100;
+
+                    const progressBar = week.querySelector('.week-progress-bar');
+                    const progressText = week.querySelector('.week-progress-text');
+                    progressBar.style.width = `${percentage}%`;
+                    progressText.textContent = `${Math.round(percentage)}%`;
+                });
+
+                const totalTasks = checkboxes.length;
+                const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const mainPercentage = (completedTasks / totalTasks) * 100;
+                
+                mainProgressBar.style.width = `${mainPercentage}%`;
+                mainProgressText.textContent = `${Math.round(mainPercentage)}% Complete`;
+            }
+
+            function saveState() {
+                const state = {};
+                checkboxes.forEach(checkbox => {
+                    const taskListItem = checkbox.closest('li');
+                    if (taskListItem) {
+                        const taskId = taskListItem.dataset.taskId;
+                        if (taskId) {
+                            state[taskId] = checkbox.checked;
+                        }
+                    }
+                });
+                localStorage.setItem('arabicPlanState', JSON.stringify(state));
+            }
+
+            function loadState() {
+                const storedState = localStorage.getItem('arabicPlanState');
+                if (storedState) {
+                    const state = JSON.parse(storedState);
+                    checkboxes.forEach(checkbox => {
+                        const taskListItem = checkbox.closest('li');
+                        if (taskListItem) {
+                            const taskId = taskListItem.dataset.taskId;
+                            if (taskId && state[taskId]) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
