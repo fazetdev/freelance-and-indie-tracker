@@ -1,0 +1,91 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 20px;
+  }
+  
+  /* Header */
+  header {
+    background: #0077b6;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    margin-bottom: 10px;
+  }
+  
+  /* Sections */
+  section {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  section h2 {
+    margin-bottom: 10px;
+    color: #0077b6;
+  }
+  
+  /* Lists */
+  ul {
+    list-style: none;
+    padding-left: 10px;
+  }
+  
+  ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  ul li:last-child {
+    border-bottom: none;
+  }
+  
+  ul li a {
+    color: #0077b6;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+    background: #0077b6;
+    color: white;
+    border-radius: 8px;
+  }
+  
+  /* Progress bars (optional) */
+  .progress {
+    background: #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  
+  .progress-bar {
+    height: 10px;
+    background: #0077b6;
+    width: 0; /* You can adjust with inline style later */
+  }
+  

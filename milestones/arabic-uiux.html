@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Plan Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+       /* === Global === */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #e0f2fe);
+    color: #1e293b;
+    line-height: 1.7;
+    margin: 0;
+    padding: 30px;
+}
+
+/* === Container === */
+.container {
+    max-width: 960px;
+    margin: auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* === Heading === */
+h1 {
+    text-align: center;
+    color: #1e40af;
+    font-weight: 800;
+    font-size: 2.4rem;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+}
+
+/* === Progress === */
+.progress-container {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 18px;
+    margin-top: 12px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+    transition: width 0.5s ease-in-out;
+}
+
+#main-progress-bar {
+    height: 18px;
+    border-radius: 20px;
+}
+
+.progress-text {
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-top: 8px;
+    font-size: 0.95rem;
+}
+
+/* === Phases === */
+.phase {
+    margin-bottom: 50px;
+    border-left: 6px solid #3b82f6;
+    padding-left: 22px;
+    transition: border-color 0.3s ease;
+}
+.phase:hover {
+    border-left-color: #6366f1;
+}
+
+.phase h2 {
+    color: #1e3a8a;
+    margin-top: 0;
+    font-size: 1.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+}
+
+.phase-hours {
+    font-size: 0.95rem;
+    font-weight: normal;
+    color: #64748b;
+}
+
+/* === Weeks === */
+.week {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-top: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f9fafb;
+    transition: all 0.3s ease;
+}
+.week:hover {
+    background: #f8fafc;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+    border-color: #cbd5e1;
+}
+
+.week-header {
+    background: #f1f5f9;
+    padding: 16px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+.week-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1e40af;
+    font-weight: 600;
+}
+
+/* === Tracker inside weeks === */
+.tracker-wrapper {
+    display: flex;
+    align-items: center;
+}
+.tracker {
+    display: flex;
+    align-items: center;
+    width: 160px;
+    margin-right: 15px;
+}
+.tracker .progress-bar-container {
+    flex-grow: 1;
+    margin-right: 10px;
+    height: 10px;
+}
+.tracker .progress-bar {
+    background: linear-gradient(90deg, #10b981, #22c55e);
+    height: 10px;
+}
+.tracker .progress-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* === Dropdown icon === */
+.dropdown-icon {
+    font-size: 1.1rem;
+    color: #475569;
+    transition: transform 0.3s ease-in-out;
+}
+.week.open .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+/* === Week Content === */
+.week-content {
+    padding: 22px;
+    background-color: #ffffff;
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+.week.open .week-content {
+    display: block;
+}
+
+.week-content h4 {
+    color: #2563eb;
+    margin-top: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Task List === */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+ul li {
+    margin-bottom: 12px;
+}
+ul li label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+ul li label:hover {
+    background: #f1f5f9;
+}
+ul li input[type="checkbox"] {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>UI/UX Project Plan Tracker</h1>
+        <div class="progress-container">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="main-progress-bar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-text" id="main-progress-text">0% Complete</div>
+        </div>
+
+        <div class="phase" data-phase-id="1">
+            <h2>Phase 1: Foundations <span class="phase-hours">(Weeks 1–2, ~48 hours core)</span></h2>
+            <div class="phase-weeks">
+                <div class="week" data-week-id="1">
+                    <div class="week-header">
+                        <h3>Week 1: Figma & RTL Mastery</h3>
+                        <div class="tracker-wrapper">
+                            <div class="tracker">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar week-progress-bar"></div>
+                                </div>
+                                <div class="progress-text week-progress-text">0%</div>
+                            </div>
+                            <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="week-content">
+                        <h4>Focus:</h4>
+                        <p>Basics of Figma and Auto Layout for RTL layouts.</p>
+                        <h4>Daily Tasks:</h4>
+                        <ul>
+                            <li data-task-id="1-1">
+                                <label>
+                                    <input type="checkbox"> Days 1–3: Watch Figma beginner tutorials
+                                </label>
+                            </li>
+                            <li data-task-id="1-2">
+                                <label>
+                                    <input type="checkbox"> Days 4–6: Mirror layouts to RTL
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Gap Addition:</h4>
+                        <ul>
+                            <li data-task-id="1-3">
+                                <label>
+                                    <input type="checkbox"> Compile 25 Arabic UI terms
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="week" data-week-id="2">
+                    <div class="week-header">
+                        <h3>Week 2: Visuals & Cultural Fluency</h3>
+                        <div class="tracker-wrapper">
+                            <div class="tracker">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar week-progress-bar"></div>
+                                </div>
+                                <div class="progress-text week-progress-text">0%</div>
+                            </div>
+                            <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="week-content">
+                        <h4>Focus:</h4>
+                        <p>Arabic typography and Gulf color psychology.</p>
+                        <h4>Daily Tasks:</h4>
+                        <ul>
+                            <li data-task-id="2-1">
+                                <label>
+                                    <input type="checkbox"> Days 7–9: Study Arabic fonts
+                                </label>
+                            </li>
+                            <li data-task-id="2-2">
+                                <label>
+                                    <input type="checkbox"> Days 10–12: Research Gulf colors
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Gap Addition:</h4>
+                        <ul>
+                            <li data-task-id="2-3">
+                                <label>
+                                    <input type="checkbox"> Expand UI vocabulary to 50 terms
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase" data-phase-id="2">
+            <h2>Phase 2: Application <span class="phase-hours">(Weeks 3–4, ~48 hours core + ~36 hours advanced course)</span></h2>
+            <div class="phase-weeks">
+                <div class="week" data-week-id="3">
+                    <div class="week-header">
+                        <h3>Week 3: Crypto Wallet Prototype</h3>
+                        <div class="tracker-wrapper">
+                            <div class="tracker">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar week-progress-bar"></div>
+                                </div>
+                                <div class="progress-text week-progress-text">0%</div>
+                            </div>
+                            <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="week-content">
+                        <h4>Focus:</h4>
+                        <p>Core flows (login, send, receive) for bilingual interface.</p>
+                        <h4>Daily Tasks:</h4>
+                        <ul>
+                            <li data-task-id="3-1">
+                                <label>
+                                    <input type="checkbox"> Days 13–15: Design key screens
+                                </label>
+                            </li>
+                            <li data-task-id="3-2">
+                                <label>
+                                    <input type="checkbox"> Days 16–18: Build high-fidelity prototype
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Gap Addition:</h4>
+                        <ul>
+                            <li data-task-id="3-3">
+                                <label>
+                                    <input type="checkbox"> Initial user testing with 2–3 testers
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Advanced Course:</h4>
+                        <ul>
+                            <li data-task-id="3-4">
+                                <label>
+                                    <input type="checkbox"> Start IDF's "Advanced UX Design" module
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="week" data-week-id="4">
+                    <div class="week-header">
+                        <h3>Week 4: E-Commerce Prototype</h3>
+                        <div class="tracker-wrapper">
+                            <div class="tracker">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar week-progress-bar"></div>
+                                </div>
+                                <div class="progress-text week-progress-text">0%</div>
+                            </div>
+                            <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="week-content">
+                        <h4>Focus:</h4>
+                        <p>Checkout flow and product display for high-traffic apps.</p>
+                        <h4>Daily Tasks:</h4>
+                        <ul>
+                            <li data-task-id="4-1">
+                                <label>
+                                    <input type="checkbox"> Days 19–21: Design bilingual marketplace
+                                </label>
+                            </li>
+                            <li data-task-id="4-2">
+                                <label>
+                                    <input type="checkbox"> Days 22–24: Build clickable prototype
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Gap Addition:</h4>
+                        <ul>
+                            <li data-task-id="4-3">
+                                <label>
+                                    <input type="checkbox"> Test prototypes with 3 more users
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Advanced Course:</h4>
+                        <ul>
+                            <li data-task-id="4-4">
+                                <label>
+                                    <input type="checkbox"> Continue IDF module
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase" data-phase-id="3">
+            <h2>Phase 3: Final Deliverables & Polish <span class="phase-hours">(Weeks 5–6, ~48 hours core + ~36 hours advanced course)</span></h2>
+            <div class="phase-weeks">
+                <div class="week" data-week-id="5">
+                    <div class="week-header">
+                        <h3>Week 5: Portfolio & Presentation</h3>
+                        <div class="tracker-wrapper">
+                            <div class="tracker">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar week-progress-bar"></div>
+                                </div>
+                                <div class="progress-text week-progress-text">0%</div>
+                            </div>
+                            <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="week-content">
+                        <h4>Focus:</h4>
+                        <p>Simple bilingual portfolio site and case studies.</p>
+                        <h4>Daily Tasks:</h4>
+                        <ul>
+                            <li data-task-id="5-1">
+                                <label>
+                                    <input type="checkbox"> Days 25–27: Design portfolio site in Figma
+                                </label>
+                            </li>
+                            <li data-task-id="5-2">
+                                <label>
+                                    <input type="checkbox"> Days 28–30: Write bilingual case studies
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Gap Addition:</h4>
+                        <ul>
+                            <li data-task-id="5-3">
+                                <label>
+                                    <input type="checkbox"> Create bilingual pitch video
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Advanced Course:</h4>
+                        <ul>
+                            <li data-task-id="5-4">
+                                <label>
+                                    <input type="checkbox"> Advance to IDF's "International UX" module
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="week" data-week-id="6">
+                    <div class="week-header">
+                        <h3>Week 6: Polish, Testing, & Growth Integration</h3>
+                        <div class="tracker-wrapper">
+                            <div class="tracker">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar week-progress-bar"></div>
+                                </div>
+                                <div class="progress-text week-progress-text">0%</div>
+                            </div>
+                            <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="week-content">
+                        <h4>Focus:</h4>
+                        <p>Final refinements and advanced course application for competitive edge.</p>
+                        <h4>Daily Tasks:</h4>
+                        <ul>
+                            <li data-task-id="6-1">
+                                <label>
+                                    <input type="checkbox"> Days 31–33: Polish prototypes
+                                </label>
+                            </li>
+                            <li data-task-id="6-2">
+                                <label>
+                                    <input type="checkbox"> Days 34–36: Conduct full user testing
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Gap Addition:</h4>
+                        <ul>
+                            <li data-task-id="6-3">
+                                <label>
+                                    <input type="checkbox"> Finalize UI vocabulary cheat sheet
+                                </label>
+                            </li>
+                        </ul>
+                        <h4>Advanced Course:</h4>
+                        <ul>
+                            <li data-task-id="6-4">
+                                <label>
+                                    <input type="checkbox"> Complete IDF module
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const weeks = document.querySelectorAll('.week');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const mainProgressBar = document.getElementById('main-progress-bar');
+            const mainProgressText = document.getElementById('main-progress-text');
+
+            // Load state from localStorage on page load
+            loadState();
+
+            // Event listener for expanding/collapsing weeks
+            weeks.forEach(week => {
+                week.querySelector('.week-header').addEventListener('click', () => {
+                    week.classList.toggle('open');
+                });
+            });
+
+            // Event listener for checkbox changes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateProgress();
+                    saveState();
+                });
+            });
+
+            // Initial update of progress bars
+            updateProgress();
+
+            function updateProgress() {
+                // Update week progress
+                weeks.forEach(week => {
+                    const weekCheckboxes = week.querySelectorAll('input[type="checkbox"]');
+                    const totalTasks = weekCheckboxes.length;
+                    if (totalTasks === 0) return;
+
+                    const completedTasks = Array.from(weekCheckboxes).filter(cb => cb.checked).length;
+                    const percentage = (completedTasks / totalTasks) * 100;
+
+                    const progressBar = week.querySelector('.week-progress-bar');
+                    const progressText = week.querySelector('.week-progress-text');
+                    progressBar.style.width = `${percentage}%`;
+                    progressText.textContent = `${Math.round(percentage)}%`;
+                });
+
+                // Update main progress
+                const totalTasks = checkboxes.length;
+                const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const mainPercentage = (completedTasks / totalTasks) * 100;
+                
+                mainProgressBar.style.width = `${mainPercentage}%`;
+                mainProgressText.textContent = `${Math.round(mainPercentage)}% Complete`;
+            }
+
+            function saveState() {
+                const state = {};
+                checkboxes.forEach(checkbox => {
+                    const taskId = checkbox.closest('li').dataset.taskId;
+                    if (taskId) {
+                        state[taskId] = checkbox.checked;
+                    }
+                });
+                localStorage.setItem('projectPlanState', JSON.stringify(state));
+            }
+
+            function loadState() {
+                const storedState = localStorage.getItem('projectPlanState');
+                if (storedState) {
+                    const state = JSON.parse(storedState);
+                    checkboxes.forEach(checkbox => {
+                        const taskId = checkbox.closest('li').dataset.taskId;
+                        if (taskId && state[taskId]) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
