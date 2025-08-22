@@ -1,12 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Setup for a Nigerian Freelancer</title>
+    <!-- Tailwind CSS for a professional, responsive look -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Very light green background */
+            color: #1a2e35;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem;
+            padding: 2.5rem;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #d1fae5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #065f46; /* Dark green for heading */
+            letter-spacing: -0.05em;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: #4b5563;
+            margin-top: 0.5rem;
+        }
+
+        .section-card {
+            background-color: #ecfdf5;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease-in-out;
+            border-left: 8px solid #34d399; /* A pop of vibrant green */
+        }
+
+        .section-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-5px);
+            border-left-color: #059669;
+        }
+
+        .section-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-card h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #34d399;
+            margin-top: 0.5rem;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .section-card:hover h2::after {
+            width: 80px;
+        }
+
+        .section-card p {
+            color: #4a5568;
+        }
+        
+        /* Styles for checkboxes and task list */
+        .task-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .task-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .task-checkbox {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #34d399;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.75rem;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .task-checkbox:checked {
+            background-color: #065f46;
+            border-color: #065f46;
+        }
+
+        .task-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        .task-text {
+            color: #4a5568;
+            transition: opacity 0.3s, text-decoration 0.3s;
+        }
+
+        .task-completed .task-text {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+    </style>
 </head>
 <body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+    <div class="container">
+        <header class="header">
+            <h1>The Legal Groundwork</h1>
+            <p>Essential steps to protect yourself as a professional Nigerian freelancer.</p>
+        </header>
+        
+        <!-- Progress Bar -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-700">Your Progress</h2>
+            <div class="w-full bg-gray-200 rounded-full h-4 mt-2">
+                <div id="progressBar" class="bg-emerald-500 h-4 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="text-right text-sm font-medium text-gray-500 mt-1">0% Complete</p>
+        </div>
+
+        <!-- Business Registration Section -->
+        <div class="section-card">
+            <h2>Business Registration</h2>
+            <p>
+                This step gives you legal standing and can make you appear more professional to clients. While not strictly necessary for an entry-level freelancer, it's a valuable long-term goal.
+            </p>
+            <ul class="task-list">
+                <li data-task-id="legal-task-1">
+                    <input type="checkbox" id="legal-checkbox-1" class="task-checkbox">
+                    <label for="legal-checkbox-1" class="task-text">Register your freelance business name or as a sole proprietor with the **Corporate Affairs Commission (CAC)** in Nigeria.</label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Client Contract Template Section -->
+        <div class="section-card">
+            <h2>Client Contract Template</h2>
+            <p>
+                A simple contract is a crucial tool for protecting your work. It clearly outlines the terms of your engagement and prevents misunderstandings.
+            </p>
+            <ul class="task-list">
+                <li data-task-id="legal-task-2">
+                    <input type="checkbox" id="legal-checkbox-2" class="task-checkbox">
+                    <label for="legal-checkbox-2" class="task-text">Create a simple contract that outlines your services, project timelines, payment terms, and what happens if a project goes over scope.</label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Business Insurance Section -->
+        <div class="section-card">
+            <h2>Secure Business Insurance</h2>
+            <p>
+                As you grow and take on larger projects, professional indemnity insurance can protect you against claims of negligence or mistakes in your work.
+            </p>
+            <ul class="task-list">
+                <li data-task-id="legal-task-3">
+                    <input type="checkbox" id="legal-checkbox-3" class="task-checkbox">
+                    <label for="legal-checkbox-3" class="task-text">Consider professional indemnity insurance to protect yourself as you take on larger, higher-paying projects.</label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for task tracking and progress bar
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const totalTasks = checkboxes.length;
+
+            // Load saved state from localStorage
+            function loadProgress() {
+                checkboxes.forEach(checkbox => {
+                    const taskId = checkbox.closest('li').dataset.taskId;
+                    // Use a unique key to prevent conflicts with other trackers
+                    const isCompleted = localStorage.getItem(`legal-tracker-${taskId}`) === 'true';
+                    checkbox.checked = isCompleted;
+                    if (isCompleted) {
+                        checkbox.closest('li').classList.add('task-completed');
+                    }
+                });
+                updateProgress();
+            }
+
+            // Update the progress bar and text
+            function updateProgress() {
+                const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                
+                progressBar.style.width = `${progressPercentage}%`;
+                progressText.textContent = `${completedTasks} of ${totalTasks} tasks complete (${progressPercentage.toFixed(0)}%)`;
+            }
+
+            // Add event listeners to all checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    const taskId = event.target.closest('li').dataset.taskId;
+                    if (event.target.checked) {
+                        localStorage.setItem(`legal-tracker-${taskId}`, 'true');
+                        event.target.closest('li').classList.add('task-completed');
+                    } else {
+                        localStorage.removeItem(`legal-tracker-${taskId}`);
+                        event.target.closest('li').classList.remove('task-completed');
+                    }
+                    updateProgress();
+                });
+            });
+
+            // Run on page load
+            loadProgress();
+        });
+    </script>
 </body>
 </html>

@@ -3,568 +3,663 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>18-Week Client Handling Plan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Global Freelance Mastery Plan</title>
+    <!-- Use Tailwind CSS for a modern, responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary-color: #6B4E31; /* Rich brown */
-            --secondary-color: #4A3728; /* Darker brown */
-            --background-color: #F5F5DC; /* Light cream for body */
-            --card-background: #FFFFFF; /* White for cards */
-            --text-color: #4A4A4A; /* Dark gray for text */
-            --light-text-color: #8B6F47; /* Lighter brown for subtitles */
-            --border-color: #D2B48C; /* Tan for borders */
-            --progress-bar-color: #9ACD32; /* Professional lemon green */
-            --progress-bar-bg: #F0FFF0; /* Light green for progress bar background */
-            --accent-color: #9ACD32; /* Lemon green for accents */
-        }
-
+        /* Custom styles for a polished look and added functionality */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 2rem;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Dark mode styles */
+        body.dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
         }
 
-        .container {
-            max-width: 960px;
-            margin: auto;
-            background: var(--card-background);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        .card {
+            background-color: #fff;
+            transition: background-color 0.3s, transform 0.2s;
         }
-
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+        
+        .dark .card {
+            background-color: #2d3748;
         }
-
-        .subtitle {
-            text-align: center;
-            color: var(--light-text-color);
-            margin-bottom: 2rem;
-            font-size: 1.2rem;
-        }
-
-        .progress-container {
-            margin-bottom: 2.5rem;
-            text-align: center;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            background-color: var(--progress-bar-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            height: 15px;
-            margin-top: 10px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background-color: var(--progress-bar-color);
-            transition: width 0.4s ease-in-out;
-            border-radius: 15px;
-        }
-
-        .progress-text {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-top: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .phase {
-            margin-bottom: 3rem;
-        }
-
-        .phase-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .phase-header h2 {
-            font-size: 1.8rem;
-            color: var(--secondary-color);
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .week-card {
-            background-color: var(--card-background);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .week-card:hover {
+        
+        .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .card:hover {
+            background-color: #4a5568;
+        }
+        
+        /* Focus styles for accessibility */
+        .card:focus-within {
+            outline: 2px solid #6366f1;
+            outline-offset: 4px;
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
         }
 
-        .week-header {
+        /* Styles for the collapsing sections */
+        .collapsible-summary {
+            cursor: pointer;
+            list-style: none; /* Hide the default arrow */
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 2rem;
-            background-color: var(--accent-color);
-            color: #FFFFFF;
-            cursor: pointer;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* A custom arrow using a pseudo-element */
+        .collapsible-summary::before {
+            content: '+';
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.2s ease-in-out;
+            margin-right: 0.5rem;
         }
 
-        .week-header h3 {
-            margin: 0;
-            font-size: 1.4rem;
-            font-weight: 600;
+        details[open] .collapsible-summary::before {
+            content: '−';
         }
 
-        .week-tracker {
-            display: flex;
-            align-items: center;
-        }
-
-        .week-progress-container {
-            width: 120px;
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            margin-right: 1rem;
-        }
-
-        .week-progress-bar {
-            background-color: #FFFFFF;
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.4s ease-in-out;
-        }
-
-        .week-progress-text {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #FFFFFF;
-        }
-
-        .dropdown-icon {
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .week-card.open .dropdown-icon {
-            transform: rotate(180deg);
-        }
-
-        .week-content {
-            padding: 0 2rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-        }
-
-        .week-card.open .week-content {
-            max-height: 2500px;
-            padding: 1.5rem 2rem;
-        }
-
-        .week-content h4 {
-            color: var(--primary-color);
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .week-content p {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        li {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 0.8rem;
-            font-size: 1rem;
-        }
-
-        li label {
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        input[type="checkbox"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
+        /* Tracker checkbox styles - adjusted for a larger size */
+        .task-checkbox {
             appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent-color);
-            border-radius: 5px;
-            margin-right: 15px;
-            cursor: pointer;
+            width: 1.5rem; /* Increased size */
+            height: 1.5rem; /* Increased size */
+            border: 2px solid #6366f1;
+            border-radius: 6px; /* Slightly more rounded */
+            background-color: #fff;
             position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            margin-right: 0.75rem; /* Increased space from text */
             flex-shrink: 0;
-            transition: background-color 0.3s;
         }
 
-        input[type="checkbox"]:checked {
-            background-color: var(--progress-bar-color);
-            border-color: var(--progress-bar-color);
+        .dark .task-checkbox {
+            background-color: #4a5568;
+            border-color: #a5b4fc;
         }
 
-        input[type="checkbox"]:checked::after {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: #FFFFFF;
+        .task-checkbox:checked {
+            background-color: #6366f1;
+            border-color: #6366f1;
+        }
+
+        .task-checkbox:checked::after {
+            content: '✓';
+            color: #fff;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 14px;
+            font-size: 1rem; /* Adjusted font size for larger box */
+            line-height: 1;
+        }
+        
+        /* Style for completed tasks */
+        .task-completed {
+            text-decoration: line-through;
+            opacity: 0.6;
         }
 
-        .expected-outcome h2 {
-            font-size: 1.8rem;
-            color: var(--secondary-color);
-            font-weight: 700;
-            margin-top: 3rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .outcome-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .outcome-item {
-            background-color: var(--background-color);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .outcome-item h4 {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>18-Week Client Handling Plan</h1>
-        <p class="subtitle">Client Communication & Revisions</p>
-
-        <div class="progress-container">
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="main-progress-bar" style="width: 0%;"></div>
+<body class="bg-gray-50 text-gray-800">
+    <a href="index.html">Home</a>
+    <!-- Dark Mode Toggle Button -->
+    <button id="darkModeToggle" class="dark-mode-toggle p-2 rounded-full shadow-lg text-gray-800 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.364l-1.556 1.556M21 12h-2.25m-.364 6.364l-1.556-1.556M12 21v-2.25m-6.364-.364l1.556-1.556M3 12H5.25m.364-6.364l1.556 1.556M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+        </svg>
+    </button>
+    
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-8 max-w-7xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-bold text-indigo-700 dark:text-indigo-400">Global Freelance Mastery Plan</h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">An elaborate and cosmopolitan plan for excelling in the global freelance market.</p>
+        </header>
+        
+        <!-- General Progress Tracker -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">Overall Progress</h2>
+            <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
+                <div id="progressBar" class="bg-indigo-500 h-4 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
             </div>
-            <div class="progress-text" id="main-progress-text">0% Complete</div>
+            <p id="progressText" class="text-right text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
         </div>
 
-        <div class="phase">
-            <div class="phase-header"><h2>Phase 1: Foundations (Weeks 1–4, Aug 25–Sep 21, ~8 hours)</h2></div>
-            <div class="week-card" data-week-id="1">
-                <div class="week-header">
-                    <h3>Week 1–2: Client Expectations (4 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
+        <!-- Grid for Study Plan Cards -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Phase 1 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Phase 1: Foundations (Weeks 1–4)</h2>
+                </summary>
+                <div class="pt-4 space-y-4">
+                    <!-- Week 1-2 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 1–2: Client Expectations & Scoping</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week1-2" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week1-2" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week1-2">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w1-2-task1" data-task-id="w1-2-task1" class="task-checkbox mt-1">
+                                    <label for="w1-2-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Watch a video on **"scope creep" and project boundaries** (~0.3 hours). Practice 2 phrases in a second language (e.g., Arabic: “السلام عليكم” - As-salāmu ʿalaykum; Spanish: “Hola, ¿cómo estás?” - Hello, how are you?) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w1-2-task2" data-task-id="w1-2-task2" class="task-checkbox mt-1">
+                                    <label for="w1-2-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Draft a comprehensive **project delivery message template** (100 words, English + 2 phrases from your chosen language) (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w1-2-task3" data-task-id="w1-2-task3" class="task-checkbox mt-1">
+                                    <label for="w1-2-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Read 3 emails from global platforms (e.g., Mostaql, Upwork, Fiverr), extract 5 key communication phrases, and practice a delivery role-play with a language model like Grok (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w1-2-task4" data-task-id="w1-2-task4" class="task-checkbox mt-1">
+                                    <label for="w1-2-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 2: delivery practice). Target: 2 robust templates and 10 conversational phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                    <!-- Week 3-4 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 3–4: Clarification & Cultural Nuances</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week3-4" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week3-4" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week3-4">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w3-4-task1" data-task-id="w3-4-task1" class="task-checkbox mt-1">
+                                    <label for="w3-4-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Read an article on **cross-cultural communication** (~0.3 hours). Practice 2 phrases for clarification (e.g., Arabic: “هل يمكن توضيح التفاصيل؟” - Can you clarify the details?; French: "Pourriez-vous préciser?" - Could you specify?) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w3-4-task2" data-task-id="w3-4-task2" class="task-checkbox mt-1">
+                                    <label for="w3-4-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Draft a versatile **clarification template** (75 words, 2 phrases) covering various scenarios (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w3-4-task3" data-task-id="w3-4-task3" class="task-checkbox mt-1">
+                                    <label for="w3-4-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Draft a **revision request template** for clients to follow (~0.3 hours). Role-play a clarification conversation with Grok (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w3-4-task4" data-task-id="w3-4-task4" class="task-checkbox mt-1">
+                                    <label for="w3-4-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 4: clarification practice). Target: 5 templates and 20 phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
                 </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Build client communication basics.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="1-1"><label><input type="checkbox"> Day 1 (40 min): Watch video on scope creep (~0.3 hours). Practice 2 Arabic phrases (e.g., “السلام عليكم” = As-salāmu ʿalaykum; ~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="1-2"><label><input type="checkbox"> Day 3 (40 min): Draft delivery message template (50 words, English + 2 Arabic phrases; ~0.5 hours). Review: 15 min.</label></li>
-                        <li data-task-id="1-3"><label><input type="checkbox"> Day 5 (40 min): Read 3 Mostaql emails, extract 5 phrases (~0.3 hours). Practice delivery role-play with Grok (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="1-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 2: delivery practice). Target: 2 templates, 10 Arabic phrases.</label></li>
-                    </ul>
+            </details>
+            
+            <!-- Phase 2 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Phase 2: Revision & Feedback Handling (Weeks 5–9)</h2>
+                </summary>
+                <div class="pt-4 space-y-4">
+                    <!-- Week 5-7 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 5–7: Minor Revisions</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week5-7" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week5-7" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week5-7">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w5-7-task1" data-task-id="w5-7-task1" class="task-checkbox mt-1">
+                                    <label for="w5-7-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Collect 3 revision examples from various freelance platforms (e.g., Upwork, Freelancer, Toptal) (~0.3 hours). Practice 2 phrases for revision acceptance (e.g., Arabic: “يمكنني إجراء التعديلات” - I can make revisions; Japanese: "修正できます" - Shūsei dekimasu) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w5-7-task2" data-task-id="w5-7-task2" class="task-checkbox mt-1">
+                                    <label for="w5-7-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Write 1 detailed **minor revision scenario** (100 words, 2 phrases) (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w5-7-task3" data-task-id="w5-7-task3" class="task-checkbox mt-1">
+                                    <label for="w5-7-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Role-play a minor revision with a language model (~0.3 hours). Read 3 more client emails and extract 5 key phrases for feedback management (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w5-7-task4" data-task-id="w5-7-task4" class="task-checkbox mt-1">
+                                    <label for="w5-7-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 7: revision practice). Target: 5 scenarios and 25 phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                    <!-- Week 8-9 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 8–9: Major Revisions & Scope Management</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week8-9" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week8-9" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week8-9">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w8-9-task1" data-task-id="w8-9-task1" class="task-checkbox mt-1">
+                                    <label for="w8-9-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Collect 3 major revision examples that require a **scope negotiation** (~0.3 hours). Practice 2 phrases for "out of scope" discussions (e.g., Arabic: “هذا خارج النطاق” - This is out of scope; German: "Das liegt außerhalb des Rahmens" - That is outside the scope) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w8-9-task2" data-task-id="w8-9-task2" class="task-checkbox mt-1">
+                                    <label for="w8-9-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Write 1 detailed **major revision scenario** (100 words, 2 phrases) with a focus on negotiation (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w8-9-task3" data-task-id="w8-9-task3" class="task-checkbox mt-1">
+                                    <label for="w8-9-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Role-play a major revision with a language model (~0.3 hours). Post an excerpt from a negotiated scenario on LinkedIn/X to showcase your expertise (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w8-9-task4" data-task-id="w8-9-task4" class="task-checkbox mt-1">
+                                    <label for="w8-9-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 9: scope practice). Target: 10 scenarios and 30 phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
                 </div>
-            </div>
-            <div class="week-card" data-week-id="2">
-                <div class="week-header">
-                    <h3>Week 3–4: Clarification & Revisions (4 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
+            </details>
+            
+            <!-- Phase 3 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Phase 3: Relationship Building (Weeks 10–13)</h2>
+                </summary>
+                <div class="pt-4 space-y-4">
+                    <!-- Week 10-11 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 10–11: Follow-Up & Client Retention</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week10-11" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week10-11" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week10-11">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w10-11-task1" data-task-id="w10-11-task1" class="task-checkbox mt-1">
+                                    <label for="w10-11-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Research 3 freelancer tips for **client retention** and repeat business (~0.3 hours). Practice 2 phrases for future collaboration (e.g., Arabic: “أتطلع للتعاون مرة أخرى” - I look forward to collaborating again; Mandarin: "期待再次合作" - Qídài zàicì hézuò) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w10-11-task2" data-task-id="w10-11-task2" class="task-checkbox mt-1">
+                                    <label for="w10-11-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Draft a comprehensive **follow-up message** (75 words, 2 phrases) to check on project success (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w10-11-task3" data-task-id="w10-11-task3" class="task-checkbox mt-1">
+                                    <label for="w10-11-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Draft a **"free tip" message** offering a small piece of professional advice to a past client (~0.3 hours). Role-play a follow-up with a language model (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w10-11-task4" data-task-id="w10-11-task4" class="task-checkbox mt-1">
+                                    <label for="w10-11-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 11: follow-up practice). Target: 3 messages and 35 phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                    <!-- Week 12-13 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 12–13: Building Trust & Authority</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week12-13" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week12-13" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week12-13">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w12-13-task1" data-task-id="w12-13-task1" class="task-checkbox mt-1">
+                                    <label for="w12-13-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Read 3 client testimonials/emails and extract 5 key phrases that build trust (~0.3 hours). Practice 2 phrases for expressing gratitude (e.g., Arabic: “شكراً على ثقتكم” - Thank you for your trust; Portuguese: "Obrigado pela sua confiança" - Thank you for your trust) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w12-13-task2" data-task-id="w12-13-task2" class="task-checkbox mt-1">
+                                    <label for="w12-13-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Draft a proactive **check-in message** (75 words) to offer assistance on a future project (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w12-13-task3" data-task-id="w12-13-task3" class="task-checkbox mt-1">
+                                    <label for="w12-13-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Draft a **bilingual client email** (100 words, 5 phrases) for a specific client profile (~0.3 hours). Post a thought leadership excerpt from a template on LinkedIn/X (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w12-13-task4" data-task-id="w12-13-task4" class="task-checkbox mt-1">
+                                    <label for="w12-13-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 13: trust practice). Target: 6 messages and 40 phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
                 </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Clarify details and handle revision requests.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="2-1"><label><input type="checkbox"> Day 1 (40 min): Read article on client communication (~0.3 hours). Practice 2 Arabic phrases (e.g., “هل يمكن توضيح التفاصيل؟” = Can you clarify details?; ~0.2 hours).</label></li>
-                        <li data-task-id="2-2"><label><input type="checkbox"> Day 3 (40 min): Draft clarification template (50 words, 2 phrases; ~0.5 hours). Review: 15 min.</label></li>
-                        <li data-task-id="2-3"><label><input type="checkbox"> Day 5 (40 min): Draft revision request template (~0.3 hours). Role-play with Grok (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="2-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 4: clarification practice). Target: 5 templates, 20 Arabic phrases.</label></li>
-                    </ul>
+            </details>
+            
+            <!-- Phase 4 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Phase 4: Full Simulation & Review (Weeks 14–18)</h2>
+                </summary>
+                <div class="pt-4 space-y-4">
+                    <!-- Week 14-15 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 14–15: Mock Projects & Portfolio Building</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week14-15" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week14-15" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week14-15">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w14-15-task1" data-task-id="w14-15-task1" class="task-checkbox mt-1">
+                                    <label for="w14-15-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Simulate a full project start with a language model (proposal, delivery, brief follow-up) (~0.3 hours). Practice 2 phrases for project updates (e.g., Arabic: “بدأت العمل” - I’ve started work; Russian: "Я приступил к работе" - Ya pristúpil k rabóte) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w14-15-task2" data-task-id="w14-15-task2" class="task-checkbox mt-1">
+                                    <label for="w14-15-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Write a detailed **UI/UX or project case study response** (150 words, 5 phrases) for a mock project (~0.5 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w14-15-task3" data-task-id="w14-15-task3" class="task-checkbox mt-1">
+                                    <label for="w14-15-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Role-play a detailed revision/delivery process with a language model (~0.3 hours). Post your case study on a professional portfolio site and share an excerpt on LinkedIn/X (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w14-15-task4" data-task-id="w14-15-task4" class="task-checkbox mt-1">
+                                    <label for="w14-15-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 15: project practice). Target: A full case study and 45 phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                    <!-- Week 16-18 -->
+                    <details class="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <summary class="collapsible-summary">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Week 16–18: Final Polish & Gig Simulation</h3>
+                        </summary>
+                        <div class="pt-2">
+                            <div class="mb-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                    <div id="progressBar-week16-18" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                                </div>
+                                <p id="progressText-week16-18" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                            </div>
+                            <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week16-18">
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w16-18-task1" data-task-id="w16-18-task1" class="task-checkbox mt-1">
+                                    <label for="w16-18-task1">
+                                        <span class="task-text block">
+                                            **Day 1:** Simulate a full client cycle with a language model (start to follow-up) (~0.3 hours). Practice 2 phrases for follow-up (e.g., Arabic: “سأتابع قريباً” - I’ll follow up soon; Italian: "Seguirò presto" - I will follow up soon) (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w16-18-task2" data-task-id="w16-18-task2" class="task-checkbox mt-1">
+                                    <label for="w16-18-task2">
+                                        <span class="task-text block">
+                                            **Day 3:** Revise 2 of your best templates based on all your practice (~0.3 hours). Post a refined excerpt on LinkedIn/X (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w16-18-task3" data-task-id="w16-18-task3" class="task-checkbox mt-1">
+                                    <label for="w16-18-task3">
+                                        <span class="task-text block">
+                                            **Day 5:** Simulate a response for a low-cost test gig (e.g., $5–10 on Upwork/Fiverr) to apply your skills (~0.3 hours). Review all your templates and phrases in your notes (~0.2 hours).
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="flex items-start">
+                                    <input type="checkbox" id="w16-18-task4" data-task-id="w16-18-task4" class="task-checkbox mt-1">
+                                    <label for="w16-18-task4">
+                                        <span class="task-text block">
+                                            **Touch-Up:** Italki (20 min, Week 18: final client cycle practice). Target: 5 templates, 10 scenarios, 6 messages, and 50 phrases.
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
                 </div>
-            </div>
+            </details>
         </div>
-
-        <div class="phase">
-            <div class="phase-header"><h2>Phase 2: Revision & Feedback Handling (Weeks 5–9, Sep 22–Oct 26, ~10 hours)</h2></div>
-            <div class="week-card" data-week-id="3">
-                <div class="week-header">
-                    <h3>Week 5–7: Minor Revisions (6 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
-                </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Master professional revision responses.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="3-1"><label><input type="checkbox"> Day 1 (40 min): Collect 3 revision message examples (Upwork/Mostaql; ~0.3 hours). Practice 2 Arabic phrases (e.g., “يمكنني إجراء التعديلات” = I can make revisions; ~0.2 hours).</label></li>
-                        <li data-task-id="3-2"><label><input type="checkbox"> Day 3 (40 min): Write 1 minor revision scenario (50 words, 2 phrases; ~0.5 hours). Review: 15 min.</label></li>
-                        <li data-task-id="3-3"><label><input type="checkbox"> Day 5 (40 min): Role-play minor revision with Grok (~0.3 hours). Read 3 client emails, extract 5 phrases (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="3-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 7: revision practice). Target: 5 scenarios, 25 Arabic phrases.</label></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="week-card" data-week-id="4">
-                <div class="week-header">
-                    <h3>Week 8–9: Major Revisions (4 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
-                </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Handle major revisions and scope creep.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="4-1"><label><input type="checkbox"> Day 1 (40 min): Collect 3 major revision examples (~0.3 hours). Practice 2 Arabic phrases (e.g., “هذا خارج النطاق” = This is out of scope; ~0.2 hours).</label></li>
-                        <li data-task-id="4-2"><label><input type="checkbox"> Day 3 (40 min): Write 1 major revision scenario (50 words, 2 phrases; ~0.5 hours). Review: 15 min.</label></li>
-                        <li data-task-id="4-3"><label><input type="checkbox"> Day 5 (40 min): Role-play major revision with Grok (~0.3 hours). Post scenario excerpt on LinkedIn/X (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="4-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 9: scope practice). Target: 10 scenarios, 30 Arabic phrases.</label></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="phase">
-            <div class="phase-header"><h2>Phase 3: Relationship Building (Weeks 10–13, Oct 27–Nov 23, ~8 hours)</h2></div>
-            <div class="week-card" data-week-id="5">
-                <div class="week-header">
-                    <h3>Week 10–11: Follow-Up Messages (4 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
-                </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Develop trust for repeat clients.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="5-1"><label><input type="checkbox"> Day 1 (40 min): Research 3 freelancer tips for repeat clients (~0.3 hours). Practice 2 Arabic phrases (e.g., “أتطلع للتعاون مرة أخرى” = I look forward to collaborating again; ~0.2 hours).</label></li>
-                        <li data-task-id="5-2"><label><input type="checkbox"> Day 3 (40 min): Draft 1 follow-up message (50 words, 2 phrases; ~0.5 hours). Review: 15 min.</label></li>
-                        <li data-task-id="5-3"><label><input type="checkbox"> Day 5 (40 min): Draft 1 free tip message (~0.3 hours). Role-play with Grok (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="5-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 11: follow-up practice). Target: 3 messages, 35 Arabic phrases.</label></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="week-card" data-week-id="6">
-                <div class="week-header">
-                    <h3>Week 12–13: Trust-Building (4 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
-                </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Strengthen client relationships.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="6-1"><label><input type="checkbox"> Day 1 (40 min): Read 3 client emails, extract 5 phrases (~0.3 hours). Practice 2 Arabic phrases (e.g., “شكراً على ثقتكم” = Thank you for your trust; ~0.2 hours).</label></li>
-                        <li data-task-id="6-2"><label><input type="checkbox"> Day 3 (40 min): Draft 1 follow-up message (~0.5 hours). Review: 15 min.</label></li>
-                        <li data-task-id="6-3"><label><input type="checkbox"> Day 5 (40 min): Draft bilingual client email (100 words, 5 phrases; ~0.3 hours). Post on LinkedIn/X (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="6-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 13: trust practice). Target: 6 messages, 40 Arabic phrases.</label></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="phase">
-            <div class="phase-header"><h2>Phase 4: Simulation & Review (Weeks 14–18, Nov 24–Feb 2026, ~10 hours)</h2></div>
-            <div class="week-card" data-week-id="7">
-                <div class="week-header">
-                    <h3>Week 14–15: Mock Projects (4 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
-                </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Simulate full projects, polish skills.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="7-1"><label><input type="checkbox"> Day 1 (40 min): Simulate project start with Grok (proposal, delivery; ~0.3 hours). Practice 2 Arabic phrases (e.g., “بدأت العمل” = I’ve started work; ~0.2 hours).</label></li>
-                        <li data-task-id="7-2"><label><input type="checkbox"> Day 3 (40 min): Write UI/UX case study response (100 words, 5 phrases; ~0.5 hours). Review: 15 min.</label></li>
-                        <li data-task-id="7-3"><label><input type="checkbox"> Day 5 (40 min): Role-play revision/delivery with Grok (~0.3 hours). Post case study on LinkedIn/X (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="7-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 15: project practice). Target: Case study, 45 Arabic phrases.</label></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="week-card" data-week-id="8">
-                <div class="week-header">
-                    <h3>Week 16–18: Final Polish (6 hours)</h3>
-                    <div class="week-tracker">
-                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
-                        <div class="week-progress-text">0%</div>
-                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
-                    </div>
-                </div>
-                <div class="week-content">
-                    <h4>Goal:</h4>
-                    <p>Simulate full projects, polish skills.</p>
-                    <h4>Tasks:</h4>
-                    <ul>
-                        <li data-task-id="8-1"><label><input type="checkbox"> Day 1 (40 min): Simulate full client cycle with Grok (start to follow-up; ~0.3 hours). Practice 2 Arabic phrases (e.g., “سأتابع قريباً” = I’ll follow up soon; ~0.2 hours).</label></li>
-                        <li data-task-id="8-2"><label><input type="checkbox"> Day 3 (40 min): Revise 2 templates (~0.3 hours). Post excerpt on LinkedIn/X (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="8-3"><label><input type="checkbox"> Day 5 (40 min): Simulate $5–10 Mostaql test gig response (~0.3 hours). Review Sheets (~0.2 hours). Review: 15 min.</label></li>
-                        <li data-task-id="8-4"><label><input type="checkbox"> Touch-Up: Italki (20 min, Week 18: client cycle practice). Target: 5 templates, 10 scenarios, 6 messages, 50 Arabic phrases.</label></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="expected-outcome">
-            <h2>Expected Outcome</h2>
-            <div class="outcome-list">
-                <div class="outcome-item">
-                    <h4>Deliverables</h4>
-                    <p>5 client message templates (2 for Upwork/Mostaql), 10 response scenarios (5 minor, 5 major), 6 trust-building messages, 1 bilingual client email, 1 UI/UX case study response, 50 Arabic phrases, 2 LinkedIn/X posts.</p>
-                </div>
-                <div class="outcome-item">
-                    <h4>Skills</h4>
-                    <p>Manage client expectations, handle revisions professionally, build trust for repeat gigs.</p>
-                </div>
-                <div class="outcome-item">
-                    <h4>Result</h4>
-                    <p>Confident client handling for 1–2 test gigs by Feb 2026, supporting Gulf freelancing.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const weeks = document.querySelectorAll('.week-card');
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const mainProgressBar = document.getElementById('main-progress-bar');
-            const mainProgressText = document.getElementById('main-progress-text');
+        // JavaScript for dark mode toggle functionality and task tracking
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const progressBarOverall = document.getElementById('progressBar');
+        const progressTextOverall = document.getElementById('progressText');
+        
+        // Use a broader selector for weekly trackers since their IDs are now ranges
+        const weeklyTrackers = document.querySelectorAll('[data-week]');
 
-            loadState();
+        // Dark Mode functionality
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+        });
 
-            weeks.forEach(week => {
-                week.querySelector('.week-header').addEventListener('click', () => {
-                    week.classList.toggle('open');
-                });
-            });
-
+        // Initialize tasks from local storage on page load
+        function loadTasks() {
             checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', () => {
-                    updateProgress();
-                    saveState();
-                });
+                const taskId = checkbox.dataset.taskId;
+                const isCompleted = localStorage.getItem(taskId) === 'true';
+                checkbox.checked = isCompleted;
+                updateTaskStyle(checkbox, isCompleted);
             });
+            updateAllProgress();
+        }
 
-            updateProgress();
-
-            function updateProgress() {
-                weeks.forEach(week => {
-                    const weekCheckboxes = week.querySelectorAll('input[type="checkbox"]');
-                    const totalTasks = weekCheckboxes.length;
-                    if (totalTasks === 0) return;
-
-                    const completedTasks = Array.from(weekCheckboxes).filter(cb => cb.checked).length;
-                    const percentage = (completedTasks / totalTasks) * 100;
-
-                    const progressBar = week.querySelector('.week-progress-bar');
-                    const progressText = week.querySelector('.week-progress-text');
-                    progressBar.style.width = `${percentage}%`;
-                    progressText.textContent = `${Math.round(percentage)}%`;
-                });
-
-                const totalTasks = checkboxes.length;
-                const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
-                const mainPercentage = (completedTasks / totalTasks) * 100;
-
-                mainProgressBar.style.width = `${mainPercentage}%`;
-                mainProgressText.textContent = `${Math.round(mainPercentage)}% Complete`;
-            }
-
-            function saveState() {
-                const state = {};
-                checkboxes.forEach(checkbox => {
-                    const taskListItem = checkbox.closest('li');
-                    if (taskListItem) {
-                        const taskId = taskListItem.dataset.taskId;
-                        if (taskId) {
-                            state[taskId] = checkbox.checked;
-                        }
-                    }
-                });
-                localStorage.setItem('clientHandlingPlanState', JSON.stringify(state));
-            }
-
-            function loadState() {
-                const storedState = localStorage.getItem('clientHandlingPlanState');
-                if (storedState) {
-                    const state = JSON.parse(storedState);
-                    checkboxes.forEach(checkbox => {
-                        const taskListItem = checkbox.closest('li');
-                        if (taskListItem) {
-                            const taskId = taskListItem.dataset.taskId;
-                            if (taskId && state[taskId]) {
-                                checkbox.checked = true;
-                            }
-                        }
-                    });
+        // Update task status and style
+        function updateTaskStyle(checkbox, isCompleted) {
+            const label = document.querySelector(`label[for="${checkbox.id}"] .task-text`);
+            if (label) {
+                if (isCompleted) {
+                    label.classList.add('task-completed');
+                } else {
+                    label.classList.remove('task-completed');
                 }
             }
+        }
+
+        // Update a single weekly progress bar
+        function updateWeeklyProgress(weekId) {
+            const weekContainer = document.querySelector(`[data-week="${weekId}"]`);
+            if (!weekContainer) return;
+            
+            const weeklyCheckboxes = weekContainer.querySelectorAll('input[type="checkbox"]');
+            const totalTasks = weeklyCheckboxes.length;
+            const completedTasks = Array.from(weeklyCheckboxes).filter(cb => cb.checked).length;
+            const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+            
+            // The progressBar and progressText IDs are now more specific to the week ranges
+            const progressBar = document.getElementById(`progressBar-${weekId}`);
+            const progressText = document.getElementById(`progressText-${weekId}`);
+
+            if (progressBar && progressText) {
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${completedTasks} of ${totalTasks} tasks completed (${progress.toFixed(0)}%)`;
+            }
+        }
+
+        // Update the overall progress bar
+        function updateOverallProgress() {
+            const totalTasks = checkboxes.length;
+            const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+            
+            progressBarOverall.style.width = `${progress}%`;
+            progressTextOverall.textContent = `${completedTasks} of ${totalTasks} tasks completed (${progress.toFixed(0)}%)`;
+        }
+        
+        // Update all progress bars (weekly and overall)
+        function updateAllProgress() {
+            weeklyTrackers.forEach(weekContainer => {
+                const weekId = weekContainer.dataset.week;
+                updateWeeklyProgress(weekId);
+            });
+            updateOverallProgress();
+        }
+
+        // Add event listeners for task changes
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                const taskId = event.target.dataset.taskId;
+                const isChecked = event.target.checked;
+                // Save the new state to local storage
+                localStorage.setItem(taskId, isChecked);
+                // Update the visual style
+                updateTaskStyle(event.target, isChecked);
+                // Update all progress bars
+                updateAllProgress();
+            });
         });
+
+        // Run the load function when the page is ready
+        window.addEventListener('load', loadTasks);
     </script>
 </body>
 </html>

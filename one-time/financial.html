@@ -1,12 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Financial Setup for a Nigerian Freelancer</title>
+    <!-- Tailwind CSS for a professional, responsive look -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Very light green background */
+            color: #1a2e35;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem;
+            padding: 2.5rem;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #d1fae5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #065f46; /* Dark green for heading */
+            letter-spacing: -0.05em;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: #4b5563;
+            margin-top: 0.5rem;
+        }
+
+        .section-card {
+            background-color: #ecfdf5;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease-in-out;
+            border-left: 8px solid #34d399; /* A pop of vibrant green */
+        }
+
+        .section-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-5px);
+            border-left-color: #059669;
+        }
+
+        .section-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-card h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #34d399;
+            margin-top: 0.5rem;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .section-card:hover h2::after {
+            width: 80px;
+        }
+
+        .section-card p {
+            color: #4a5568;
+        }
+        
+        /* New styles for checkboxes and task list */
+        .task-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .task-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .task-checkbox {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #34d399;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.75rem;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .task-checkbox:checked {
+            background-color: #065f46;
+            border-color: #065f46;
+        }
+
+        .task-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        .task-text {
+            color: #4a5568;
+            transition: opacity 0.3s, text-decoration 0.3s;
+        }
+
+        .task-completed .task-text {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+    </style>
 </head>
 <body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+    <div class="container">
+        <header class="header">
+            <h1>Your Financial Launchpad</h1>
+            <p>A strategic financial setup for Nigerian freelancers targeting foreign clients.</p>
+        </header>
+        
+        <!-- Progress Bar -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-700">Your Progress</h2>
+            <div class="w-full bg-gray-200 rounded-full h-4 mt-2">
+                <div id="progressBar" class="bg-emerald-500 h-4 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="text-right text-sm font-medium text-gray-500 mt-1">0% Complete</p>
+        </div>
+
+        <!-- Domiciliary Account Section -->
+        <div class="section-card">
+            <h2>The Foundation: Domiciliary Account</h2>
+            <p>
+                This is your first and most crucial step. A domiciliary account allows you to receive payments in major foreign currencies like **USD, EUR, or GBP**. This is essential for getting paid by clients in the Gulf, the Middle East, and beyond, who will likely pay in their own currency or USD.
+            </p>
+            <p class="mt-4 text-sm text-gray-500">
+                Think of it as your secure international vault, ready to receive payments directly without conversion issues.
+            </p>
+            <ul class="task-list">
+                <li data-task-id="domiciliary-task">
+                    <input type="checkbox" id="domiciliary-checkbox" class="task-checkbox">
+                    <label for="domiciliary-checkbox" class="task-text">You can open this account at most major Nigerian banks (e.g., Zenith, GTBank, First Bank).</label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Online Platforms Section -->
+        <div class="section-card">
+            <h2>The Bridge: Wise & Payoneer</h2>
+            <p>
+                These services act as a bridge between your international clients and your Nigerian bank account. They provide virtual bank accounts in various currencies, making it feel like a local transfer for your clients.
+            </p>
+            <p class="mt-4 text-sm text-gray-500">
+                These platforms are your smart connector, minimizing fees and making international transactions feel effortless.
+            </p>
+            <ul class="task-list">
+                <li data-task-id="wise-task-1">
+                    <input type="checkbox" id="wise-checkbox-1" class="task-checkbox">
+                    <label for="wise-checkbox-1" class="task-text">Receive payments from clients easily and cheaply.</label>
+                </li>
+                <li data-task-id="wise-task-2">
+                    <input type="checkbox" id="wise-checkbox-2" class="task-checkbox">
+                    <label for="wise-checkbox-2" class="task-text">Transfer money from these platforms to your Nigerian domiciliary account at lower costs than traditional wire transfers.</label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tax Section -->
+        <div class="section-card">
+            <h2>The Obligation: Taxes & Compliance</h2>
+            <p>
+                As a professional, managing your tax obligations is a key part of your business. You are responsible for your own taxes, and understanding the local laws will save you from future headaches.
+            </p>
+            <p class="mt-4 text-sm text-gray-500">
+                This step is about building a solid, compliant business foundation for long-term growth.
+            </p>
+            <ul class="task-list">
+                <li data-task-id="tax-task-1">
+                    <input type="checkbox" id="tax-checkbox-1" class="task-checkbox">
+                    <label for="tax-checkbox-1" class="task-text">Register with the **Federal Inland Revenue Service (FIRS)** and obtain a **Tax Identification Number (TIN)**.</label>
+                </li>
+                <li data-task-id="tax-task-2">
+                    <input type="checkbox" id="tax-checkbox-2" class="task-checkbox">
+                    <label for="tax-checkbox-2" class="task-text">Consult with a tax professional in Nigeria to ensure correct filing and compliance.</label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Invoicing Section -->
+        <div class="section-card">
+            <h2>The Tool: Invoicing Software</h2>
+            <p>
+                Professional invoicing is the final touch of your strategic setup. It showcases your professionalism, simplifies payment tracking, and helps you manage your business finances efficiently.
+            </p>
+            <p class="mt-4 text-sm text-gray-500">
+                Your invoices are more than just requests for payment; they are a reflection of your professional brand.
+            </p>
+            <ul class="task-list">
+                <li data-task-id="invoicing-task-1">
+                    <input type="checkbox" id="invoicing-checkbox-1" class="task-checkbox">
+                    <label for="invoicing-checkbox-1" class="task-text">Use services like **FreshBooks** or **Wave**.</label>
+                </li>
+                <li data-task-id="invoicing-task-2">
+                    <input type="checkbox" id="invoicing-checkbox-2" class="task-checkbox">
+                    <label for="invoicing-checkbox-2" class="task-text">Create professional invoices, track payments, and manage expenses seamlessly.</label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for task tracking and progress bar
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const totalTasks = checkboxes.length;
+
+            // Load saved state from localStorage
+            function loadProgress() {
+                checkboxes.forEach(checkbox => {
+                    const taskId = checkbox.closest('li').dataset.taskId;
+                    const isCompleted = localStorage.getItem(taskId) === 'true';
+                    checkbox.checked = isCompleted;
+                    if (isCompleted) {
+                        checkbox.closest('li').classList.add('task-completed');
+                    }
+                });
+                updateProgress();
+            }
+
+            // Update the progress bar and text
+            function updateProgress() {
+                const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                
+                progressBar.style.width = `${progressPercentage}%`;
+                progressText.textContent = `${completedTasks} of ${totalTasks} tasks complete (${progressPercentage.toFixed(0)}%)`;
+            }
+
+            // Add event listeners to all checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    const taskId = event.target.closest('li').dataset.taskId;
+                    if (event.target.checked) {
+                        localStorage.setItem(taskId, 'true');
+                        event.target.closest('li').classList.add('task-completed');
+                    } else {
+                        localStorage.removeItem(taskId);
+                        event.target.closest('li').classList.remove('task-completed');
+                    }
+                    updateProgress();
+                });
+            });
+
+            // Run on page load
+            loadProgress();
+        });
+    </script>
 </body>
 </html>

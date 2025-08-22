@@ -1,135 +1,141 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Data for milestones and their end dates
-    const milestones = [
-        { id: "odin", endDate: new Date("2025-09-09") },
-        { id: "fso", endDate: new Date("2025-10-27") },
-        { id: "uiux", endDate: new Date("2025-12-15") },
-        { id: "ts-next", endDate: new Date("2026-01-12") },
-        { id: "english", endDate: new Date("2026-01-12") },
-    ];
+    // --- Collapsible Logic ---
+    const toggleButtons = document.querySelectorAll(".toggle-button");
+    toggleButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const targetId = button.dataset.target;
+            const targetElement = document.querySelector(`[data-collapsible="${targetId}"]`);
 
-    // Helper function to update a single progress bar and text on the current page
-    function updateProgress(taskGroup) {
-        const checkboxes = document.querySelectorAll(
-            `[data-task-group="${taskGroup}"] input[type="checkbox"]`
-        );
-        const total = checkboxes.length;
-        if (total === 0) return;
+            if (targetElement) {
+                targetElement.classList.toggle("expanded");
+                button.classList.toggle("collapsed");
+            }
+        });
+    });
 
-        const completed = Array.from(checkboxes).filter((cb) => cb.checked).length;
-        const percentage = (completed / total) * 100;
+    // --- Progress Bar & Countdown Logic ---
+    const milestones = {
+        "odin": { endDate: new Date("2025-09-09T00:00:00") },
+        "fso": { endDate: new Date("2025-10-27T00:00:00") },
+        "arabic-uiux": { endDate: new Date("2025-12-15T00:00:00") },
+        "typescript-next": { endDate: new Date("2026-01-12T00:00:00") },
+        "portfolio": { endDate: null },
+        "ai": { endDate: null },
+        "english": { endDate: new Date("2026-01-12T00:00:00") },
+        "arabic": { endDate: null },
+        "market-research": { endDate: null },
+        "networking": { endDate: null },
+        "business-skills": { endDate: null },
+        "financial": { endDate: null },
+        "legal": { endDate: null },
+        "client-handling": { endDate: null }
+    };
+    
+    const updateProgress = (groupName) => {
+        const groupElement = document.querySelector(`[data-task-group="${groupName}"]`);
+        if (!groupElement) return;
 
-        const progressBar = document.querySelector(
-            `[data-progress-bar="${taskGroup}"]`
-        );
-        const progressText = document.querySelector(
-            `[data-progress-text="${taskGroup}"]`
-        );
-
-        if (progressBar) {
-            progressBar.style.width = `${percentage}%`;
-        }
-        if (progressText) {
-            progressText.textContent = `${percentage.toFixed(0)}% Complete`;
-        }
-    }
-
-    // Function to calculate and update overall progress on the index page
-    function updateOverallProgress() {
-        // Retrieve all tasks from local storage
-        const allTasks = JSON.parse(localStorage.getItem("trackerState")) || {};
-        const totalTasks = Object.keys(allTasks).length;
+        const checkboxes = groupElement.querySelectorAll(".task-list input[type='checkbox']");
+        const totalTasks = checkboxes.length;
         if (totalTasks === 0) return;
 
-        const completedTasks = Object.values(allTasks).filter(isCompleted => isCompleted).length;
-        const overallPercentage = (completedTasks / totalTasks) * 100;
+        const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+        const progressPercentage = (completedTasks / totalTasks) * 100;
 
-        // Update elements on the index page
+        const progressBar = groupElement.querySelector("[data-progress-bar]");
+        const progressText = groupElement.querySelector("[data-progress-text]");
+
+        if (progressBar) {
+            progressBar.style.width = `${progressPercentage}%`;
+        }
+        if (progressText) {
+            progressText.textContent = `${Math.round(progressPercentage)}% Complete`;
+        }
+    };
+
+    const updateOverallProgress = () => {
         const overallProgressBar = document.getElementById("overall-progress-bar");
         const overallProgressText = document.getElementById("overall-progress-text");
+        
+        let totalProgress = 0;
+        let totalGroups = 0;
 
-        if (overallProgressBar) {
-            overallProgressBar.style.width = `${overallPercentage}%`;
-        }
-        if (overallProgressText) {
-            overallProgressText.textContent = `${overallPercentage.toFixed(0)}% Complete`;
-        }
-    }
-
-    // Helper function to update a single countdown
-    function updateCountdown(milestone) {
-        const now = new Date();
-        const difference = milestone.endDate.getTime() - now.getTime();
-        const days = Math.ceil(difference / (1000 * 60 * 60 * 24));
-        const countdownElement = document.getElementById(`${milestone.id}-countdown`);
-
-        if (countdownElement) {
-            if (days > 0) {
-                countdownElement.textContent = `${days} days remaining`;
-            } else {
-                countdownElement.textContent = "Milestone passed!";
-                countdownElement.style.color = "#e74c3c";
-            }
-        }
-    }
-
-    // Load state from local storage on page load
-    function loadState() {
-        const state = JSON.parse(localStorage.getItem("trackerState")) || {};
-        const checkboxes = document.querySelectorAll("input[type='checkbox']");
-        checkboxes.forEach((cb) => {
-            if (state[cb.id] !== undefined) {
-                cb.checked = state[cb.id];
-            }
-        });
-    }
-
-    // Save state to local storage whenever a checkbox is changed
-    function saveState(checkboxId, isChecked) {
-        const state = JSON.parse(localStorage.getItem("trackerState")) || {};
-        state[checkboxId] = isChecked;
-        localStorage.setItem("trackerState", JSON.stringify(state));
-    }
-
-    // Initialize the page
-    function init() {
-        loadState();
-
-        milestones.forEach(updateCountdown);
-
-        const allTaskGroupsOnPage = new Set(
-            Array.from(document.querySelectorAll("[data-task-group]")).map(
-                (el) => el.dataset.taskGroup
-            )
-        );
-        allTaskGroupsOnPage.forEach(updateProgress);
-
-        document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-            checkbox.addEventListener("change", (event) => {
-                saveState(event.target.id, event.target.checked);
-                const taskGroup = event.target.closest("[data-task-group]").dataset.taskGroup;
-                updateProgress(taskGroup);
-                updateOverallProgress();
-            });
-        });
-
-        // NEW: Event listeners for the toggle buttons
-        document.querySelectorAll(".toggle-button").forEach(button => {
-            button.addEventListener("click", () => {
-                const targetId = button.dataset.target;
-                const content = document.querySelector(`[data-collapsible="${targetId}"]`);
-                if (content && button) {
-                    content.classList.toggle("collapsed");
-                    button.classList.toggle("collapsed");
+        for (const groupName in milestones) {
+            const groupElement = document.querySelector(`[data-task-group="${groupName}"]`);
+            if (groupElement) {
+                const checkboxes = groupElement.querySelectorAll(".task-list input[type='checkbox']");
+                const totalTasks = checkboxes.length;
+                if (totalTasks > 0) {
+                    const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+                    totalProgress += (completedTasks / totalTasks);
+                    totalGroups++;
                 }
-            });
-        });
-
-        // Initial call to set overall progress on the index page
-        if (document.getElementById("overall-progress-bar")) {
-            updateOverallProgress();
+            }
         }
-    }
 
-    init();
+        if (totalGroups > 0) {
+            const overallPercentage = (totalProgress / totalGroups) * 100;
+            if (overallProgressBar) {
+                overallProgressBar.style.width = `${overallPercentage}%`;
+            }
+            if (overallProgressText) {
+                overallProgressText.textContent = `${Math.round(overallPercentage)}% Complete`;
+            }
+        }
+    };
+
+    const updateCountdowns = () => {
+        const now = new Date();
+        for (const groupName in milestones) {
+            const milestone = milestones[groupName];
+            if (milestone.endDate) {
+                const countdownElement = document.getElementById(`${groupName}-countdown`);
+                if (countdownElement) {
+                    const timeRemaining = milestone.endDate.getTime() - now.getTime();
+                    const days = Math.ceil(timeRemaining / (1000 * 60 * 60 * 24));
+                    if (days > 0) {
+                        countdownElement.textContent = `Days remaining: ${days}`;
+                    } else if (days === 0) {
+                        countdownElement.textContent = `Target: Today!`;
+                    } else {
+                        countdownElement.textContent = `Target passed`;
+                    }
+                }
+            }
+        }
+        const overallCountdownElement = document.getElementById("overall-countdown");
+        const targetDate = new Date("2026-09-01T00:00:00");
+        const overallTimeRemaining = targetDate.getTime() - now.getTime();
+        const overallDays = Math.ceil(overallTimeRemaining / (1000 * 60 * 60 * 24));
+        if (overallCountdownElement) {
+            if (overallDays > 0) {
+                overallCountdownElement.textContent = `Target: ${overallDays} days left`;
+            } else {
+                overallCountdownElement.textContent = `Target: September 2026 (Past)`;
+            }
+        }
+    };
+
+    const allCheckboxes = document.querySelectorAll(".task-list input[type='checkbox']");
+    allCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", (event) => {
+            const card = event.target.closest(".card");
+            if (card) {
+                const groupName = card.dataset.taskGroup;
+                updateProgress(groupName);
+                updateOverallProgress();
+            }
+        });
+    });
+
+    const initialUpdate = () => {
+        for (const groupName in milestones) {
+            updateProgress(groupName);
+        }
+        updateOverallProgress();
+        updateCountdowns();
+    };
+
+    initialUpdate();
+    setInterval(updateCountdowns, 60000);
 });

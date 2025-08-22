@@ -1,12 +1,464 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Dev Study Plan</title>
+    <!-- Use Tailwind CSS for a modern, responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a polished look and added functionality */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Dark mode styles */
+        body.dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+
+        .card {
+            background-color: #fff;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .dark .card {
+            background-color: #2d3748;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .dark .card:hover {
+            background-color: #4a5568;
+        }
+        
+        /* Focus styles for accessibility */
+        .card:focus-within {
+            outline: 2px solid #6366f1;
+            outline-offset: 4px;
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+        }
+
+        /* Styles for the collapsing sections */
+        .collapsible-summary {
+            cursor: pointer;
+            list-style: none; /* Hide the default arrow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* A custom arrow using a pseudo-element */
+        .collapsible-summary::before {
+            content: '+';
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.2s ease-in-out;
+            margin-right: 0.5rem;
+        }
+
+        details[open] .collapsible-summary::before {
+            content: '−';
+        }
+
+        /* Tracker checkbox styles - adjusted for a larger size */
+        .task-checkbox {
+            appearance: none;
+            width: 1.5rem; /* Increased size */
+            height: 1.5rem; /* Increased size */
+            border: 2px solid #6366f1;
+            border-radius: 6px; /* Slightly more rounded */
+            background-color: #fff;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            margin-right: 0.75rem; /* Increased space from text */
+        }
+
+        .dark .task-checkbox {
+            background-color: #4a5568;
+            border-color: #a5b4fc;
+        }
+
+        .task-checkbox:checked {
+            background-color: #6366f1;
+            border-color: #6366f1;
+        }
+
+        .task-checkbox:checked::after {
+            content: '✓';
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem; /* Adjusted font size for larger box */
+            line-height: 1;
+        }
+        
+        /* Style for completed tasks */
+        .task-completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+    </style>
 </head>
-<body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Dark Mode Toggle Button -->
+    <button id="darkModeToggle" class="dark-mode-toggle p-2 rounded-full shadow-lg text-gray-800 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.364l-1.556 1.556M21 12h-2.25m-.364 6.364l-1.556-1.556M12 21v-2.25m-6.364-.364l1.556-1.556M3 12H5.25m.364-6.364l1.556 1.556M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+        </svg>
+    </button>
+    
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-8 max-w-7xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-bold text-indigo-700 dark:text-indigo-400">My FSO Plan</h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">A six-week strategic focus for mastering web development.</p>
+        </header>
+        
+        <!-- General Progress Tracker -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">Overall Progress</h2>
+            <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
+                <div id="progressBar" class="bg-indigo-500 h-4 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" class="text-right text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+        </div>
+
+        <!-- Grid for Study Plan Cards -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Week 1 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Week 1: Fundamentals & React Core</h2>
+                </summary>
+                <div class="pt-4">
+                    <!-- Weekly Tracker -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                            <div id="progressBar-week1" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                        </div>
+                        <p id="progressText-week1" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-500 dark:text-gray-400 mb-4">Parts 0, 1 & 2</h3>
+                    <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week1">
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week1-task1" data-task-id="week1-task1" class="task-checkbox mt-1">
+                            <label for="week1-task1">
+                                <span class="task-text block">
+                                    **Strategic Focus (Pareto Applied):** Your 80% focus is on mastering React components, state, and props, and understanding how a React app makes API calls.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week1-task2" data-task-id="week1-task2" class="task-checkbox mt-1">
+                            <label for="week1-task2">
+                                <span class="task-text block">
+                                    The projects (Phonebook, Course Info, etc.) are your top priority.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week1-task3" data-task-id="week1-task3" class="task-checkbox mt-1">
+                            <label for="week1-task3">
+                                <span class="task-text block">
+                                    Skim the history and optional readings.
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+            
+            <!-- Week 2 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Week 2: Full-Stack Core & Testing</h2>
+                </summary>
+                <div class="pt-4">
+                    <!-- Weekly Tracker -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                            <div id="progressBar-week2" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                        </div>
+                        <p id="progressText-week2" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-500 dark:text-gray-400 mb-4">Parts 3, 4 & 5</h3>
+                    <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week2">
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week2-task1" data-task-id="week2-task1" class="task-checkbox mt-1">
+                            <label for="week2-task1">
+                                <span class="task-text block">
+                                    **Strategic Focus (Pareto Applied):** Your 80% focus is on building the backend with Node.js/Express, implementing user authentication with JWT, and writing solid tests for both your front-end and back-end.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week2-task2" data-task-id="week2-task2" class="task-checkbox mt-1">
+                            <label for="week2-task2">
+                                <span class="task-text block">
+                                    You'll spend most of your time on the Blog List and Phonebook projects.
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+            
+            <!-- Week 3 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Week 3: Advanced React</h2>
+                </summary>
+                <div class="pt-4">
+                    <!-- Weekly Tracker -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                            <div id="progressBar-week3" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                        </div>
+                        <p id="progressText-week3" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-500 dark:text-gray-400 mb-4">Parts 6 & 7</h3>
+                    <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week3">
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week3-task1" data-task-id="week3-task1" class="task-checkbox mt-1">
+                            <label for="week3-task1">
+                                <span class="task-text block">
+                                    **Strategic Focus (Pareto Applied):** Your 80% focus is on understanding the core concepts of Redux and the basics of React Router.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week3-task2" data-task-id="week3-task2" class="task-checkbox mt-1">
+                            <label for="week3-task2">
+                                <span class="task-text block">
+                                    Don't worry about memorizing every single Redux pattern. The key is to understand how to manage complex application state.
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+            
+            <!-- Week 4 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Week 4: GraphQL & TypeScript</h2>
+                </summary>
+                <div class="pt-4">
+                    <!-- Weekly Tracker -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                            <div id="progressBar-week4" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                        </div>
+                        <p id="progressText-week4" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-500 dark:text-gray-400 mb-4">Parts 8 & 9</h3>
+                    <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week4">
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week4-task1" data-task-id="week4-task1" class="task-checkbox mt-1">
+                            <label for="week4-task1">
+                                <span class="task-text block">
+                                    **Strategic Focus (Pareto Applied):** Your 80% focus is on building a simple GraphQL API and understanding the basics of TypeScript syntax.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week4-task2" data-task-id="week4-task2" class="task-checkbox mt-1">
+                            <label for="week4-task2">
+                                <span class="task-text block">
+                                    The goal is to be able to talk about these technologies intelligently with a client, not to be an expert. You'll spend less time on these parts than on the core MERN stack.
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+            
+            <!-- Week 5 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Week 5: React Native & CI/CD</h2>
+                </summary>
+                <div class="pt-4">
+                    <!-- Weekly Tracker -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                            <div id="progressBar-week5" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                        </div>
+                        <p id="progressText-week5" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-500 dark:text-gray-400 mb-4">Parts 10 & 11</h3>
+                    <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week5">
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week5-task1" data-task-id="week5-task1" class="task-checkbox mt-1">
+                            <label for="week5-task1">
+                                <span class="task-text block">
+                                    **Strategic Focus (Pareto Applied):** Your 80% focus here is on gaining a high-level overview.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week5-task2" data-task-id="week5-task2" class="task-checkbox mt-1">
+                            <label for="week5-task2">
+                                <span class="task-text block">
+                                    For React Native, understand the key differences in components and styling.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week5-task3" data-task-id="week5-task3" class="task-checkbox mt-1">
+                            <label for="week5-task3">
+                                <span class="task-text block">
+                                    For CI/CD, understand the why (automation) and get a basic working example with GitHub Actions. You can treat these more as advanced "tutorials" than deep dives.
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+            
+            <!-- Week 6 -->
+            <details class="card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+                <summary class="collapsible-summary">
+                    <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-300">Week 6: Containers & Relational Databases</h2>
+                </summary>
+                <div class="pt-4">
+                    <!-- Weekly Tracker -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                            <div id="progressBar-week6" class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-in-out" style="width: 0%;"></div>
+                        </div>
+                        <p id="progressText-week6" class="text-right text-xs font-medium text-gray-600 dark:text-gray-400 mt-1">0% Completed</p>
+                    </div>
+                    <h3 class="text-base font-semibold text-gray-500 dark:text-gray-400 mb-4">Parts 12 & 13</h3>
+                    <ul class="text-sm list-none space-y-2 text-gray-600 dark:text-gray-300" data-week="week6">
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week6-task1" data-task-id="week6-task1" class="task-checkbox mt-1">
+                            <label for="week6-task1">
+                                <span class="task-text block">
+                                    **Strategic Focus (Pareto Applied):** Your 80% focus is on understanding what a container is and why it's useful for deployment.
+                                </span>
+                            </label>
+                        </li>
+                        <li class="flex items-start">
+                            <input type="checkbox" id="week6-task2" data-task-id="week6-task2" class="task-checkbox mt-1">
+                            <label for="week6-task2">
+                                <span class="task-text block">
+                                    For relational databases, understand the key differences from MongoDB and how to write basic SQL queries. This will demonstrate versatility and a broader understanding of backend development.
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </main>
+
+    <script>
+        // JavaScript for dark mode toggle functionality and task tracking
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const progressBarOverall = document.getElementById('progressBar');
+        const progressTextOverall = document.getElementById('progressText');
+        const weeklyTrackers = document.querySelectorAll('[data-week]');
+
+        // Dark Mode functionality
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+        });
+
+        // Initialize tasks from local storage on page load
+        function loadTasks() {
+            checkboxes.forEach(checkbox => {
+                const taskId = checkbox.dataset.taskId;
+                const isCompleted = localStorage.getItem(taskId) === 'true';
+                checkbox.checked = isCompleted;
+                updateTaskStyle(checkbox, isCompleted);
+            });
+            updateAllProgress();
+        }
+
+        // Update task status and style
+        function updateTaskStyle(checkbox, isCompleted) {
+            const label = document.querySelector(`label[for="${checkbox.id}"] .task-text`);
+            if (isCompleted) {
+                label.classList.add('task-completed');
+            } else {
+                label.classList.remove('task-completed');
+            }
+        }
+
+        // Update a single weekly progress bar
+        function updateWeeklyProgress(weekId) {
+            const weekContainer = document.querySelector(`[data-week="${weekId}"]`);
+            if (!weekContainer) return;
+            
+            const weeklyCheckboxes = weekContainer.querySelectorAll('input[type="checkbox"]');
+            const totalTasks = weeklyCheckboxes.length;
+            const completedTasks = Array.from(weeklyCheckboxes).filter(cb => cb.checked).length;
+            const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+            
+            const progressBar = document.getElementById(`progressBar-${weekId}`);
+            const progressText = document.getElementById(`progressText-${weekId}`);
+
+            if (progressBar && progressText) {
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${completedTasks} of ${totalTasks} tasks completed (${progress.toFixed(0)}%)`;
+            }
+        }
+
+        // Update the overall progress bar
+        function updateOverallProgress() {
+            const totalTasks = checkboxes.length;
+            const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+            
+            progressBarOverall.style.width = `${progress}%`;
+            progressTextOverall.textContent = `${completedTasks} of ${totalTasks} tasks completed (${progress.toFixed(0)}%)`;
+        }
+        
+        // Update all progress bars (weekly and overall)
+        function updateAllProgress() {
+            weeklyTrackers.forEach(weekContainer => {
+                const weekId = weekContainer.dataset.week;
+                updateWeeklyProgress(weekId);
+            });
+            updateOverallProgress();
+        }
+
+        // Add event listeners for task changes
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                const taskId = event.target.dataset.taskId;
+                const isChecked = event.target.checked;
+                // Save the new state to local storage
+                localStorage.setItem(taskId, isChecked);
+                // Update the visual style
+                updateTaskStyle(event.target, isChecked);
+                // Update all progress bars
+                updateAllProgress();
+            });
+        });
+
+        // Run the load function when the page is ready
+        window.addEventListener('load', loadTasks);
+    </script>
 </body>
 </html>
