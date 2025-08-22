@@ -2,11 +2,378 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Networking & Visibility Tracker</title>
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Google Fonts for Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #f3f4f6, #e5e7eb); /* Light gray gradient */
+      font-family: 'Poppins', sans-serif;
+      color: #1f2937;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Poppins', sans-serif;
+      color: #1e40af; /* Vibrant blue */
+    }
+
+    .hero {
+      background: linear-gradient(to right, #1e40af, #3b82f6); /* Blue gradient */
+      padding: 5rem 1rem;
+      text-align: center;
+      border-bottom: 6px solid #f59e0b; /* Amber accent */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #f3f4f6; /* Light gray text */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      color: #e5e7eb;
+      font-size: 1.2rem;
+    }
+
+    .phase-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      border-left: 5px solid #f59e0b; /* Amber border */
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .phase-card.collapsed .tasks {
+      display: none;
+    }
+
+    .phase-card .toggle-btn {
+      cursor: pointer;
+      color: #1e40af;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .phase-card .toggle-btn::after {
+      content: '▼';
+      font-size: 0.8rem;
+    }
+
+    .phase-card.collapsed .toggle-btn::after {
+      content: '▶';
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .task-item input[type="checkbox"] {
+      accent-color: #1e40af;
+    }
+
+    .progress-bar {
+      transition: width 0.3s ease;
+      background-color: #1e40af;
+    }
+
+    .sub-progress-bar {
+      background-color: #3b82f6;
+    }
+
+    .intro-note {
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .week-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .week-section h4 {
+      color: #1e40af;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 3rem 1rem;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .phase-card {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
-<body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+<body class="font-sans" id="app">
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>Your Networking & Visibility Journey</h1>
+    <p>Track your 18-week plan to build a Gulf-focused freelance brand by Feb 2026</p>
+  </div>
+
+  <!-- Main Tracker -->
+  <div class="container mx-auto p-6 max-w-3xl">
+    <!-- Progress Summary -->
+    <div class="mb-8 bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Overall Progress</h2>
+      <div class="w-full bg-gray-200 rounded-full h-4">
+        <div id="progress-bar" class="progress-bar h-4 rounded-full" style="width: 0%"></div>
+      </div>
+      <p id="progress-text" class="mt-2 text-gray-700">0% Complete (0/54 tasks)</p>
+    </div>
+
+    <!-- Phases -->
+    <div id="phases" class="space-y-4">
+      <!-- Phase cards populated by JS -->
+    </div>
+  </div>
+
+  <script>
+    // Phase data
+    const phases = [
+      {
+        name: "Phase 1: Foundations (Weeks 1–6)",
+        period: "Aug 25–Early Oct 2025",
+        intro: "Kickstart your visibility by building a foundation on X, LinkedIn, and Instagram/TikTok. Share 'build in public' posts about Odin projects (e.g., forms, JS apps) to engage developers. Connect with MENA developers and join communities like MENA Devs Slack. Create reels with project demos to showcase coding skills. Use Google Sheets to track metrics and Canva for visuals. Take 10-minute breaks hourly to avoid burnout. Aim for 150 X followers, 300 LinkedIn connections, and 50 Instagram/TikTok followers. This phase sets up your network for freelancing.",
+        weeks: [
+          {
+            name: "Weeks 1–2: Build in Public",
+            tasks: [
+              "Post 3 X micro-tweets (e.g., 'Day 5 of Odin: built a form')",
+              "Follow 5 MENA devs on X",
+              "Share LinkedIn reflection post (e.g., 'Learning JS functions')",
+              "Add 5 Gulf devs on LinkedIn",
+              "Create Instagram/TikTok reel (Odin project demo)",
+              "Join MENA Devs Slack, comment on 2 posts",
+            ],
+          },
+          {
+            name: "Weeks 3–4: Community Engagement",
+            tasks: [
+              "Post 3 X tweets (e.g., 'JS project update')",
+              "Follow 5 MENA startups on X",
+              "Share LinkedIn post (e.g., 'UI/UX insights')",
+              "Comment on 2 Gulf posts on LinkedIn",
+              "Create Instagram/TikTok reel (JS project demo)",
+              "Practice 1 DM template",
+            ],
+          },
+          {
+            name: "Weeks 5–6: Early Connections",
+            tasks: [
+              "Post X thread (e.g., '5 JS tips')",
+              "Follow 5 Gulf agencies on X",
+              "Share LinkedIn post (e.g., 'UI/UX mock-up insights')",
+              "Add 5 recruiters on LinkedIn",
+              "Create Instagram/TikTok reel (UI/UX mock-up)",
+              "Engage in UAE Startup Hub",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Phase 2: Client-Focused Visibility (Weeks 7–12)",
+        period: "Early Oct–Mid Dec 2025",
+        intro: "Shift to client-oriented content to attract Gulf startups and agencies. Highlight polished Odin projects (e.g., Etch-a-Sketch, Rock-Paper-Scissors) and FSO projects (e.g., Anecdotes) in posts and reels for portfolio inclusion. Share project demos on LinkedIn and Instagram/TikTok to showcase skills. Draft DM templates using Google Sheets and Canva for visuals. Use Grok for feedback to refine posts. Aim for 400 X followers, 600 LinkedIn connections, and 200 Instagram/TikTok followers. This phase builds your client funnel.",
+        weeks: [
+          {
+            name: "Weeks 7–8: Project Highlights",
+            tasks: [
+              "Post X thread (e.g., 'Building a UI')",
+              "Follow 5 Gulf founders on X",
+              "Share LinkedIn project post (e.g., 'FSO React app')",
+              "Send 1 DM (e.g., 'Loved your UI post')",
+              "Create 2 Instagram/TikTok reels (portfolio demo)",
+              "Draft 2nd DM template, polish Odin project (e.g., Etch-a-Sketch)",
+            ],
+          },
+          {
+            name: "Weeks 9–10: Client Insights",
+            tasks: [
+              "Post X tweet (e.g., 'UI design tips')",
+              "Comment on 2 Gulf posts on X",
+              "Share LinkedIn insight (e.g., 'UI trends')",
+              "Send 1 DM",
+              "Create 2 Instagram/TikTok reels (FSO project demo)",
+              "Practice DM template, polish Odin project (e.g., Rock-Paper-Scissors)",
+            ],
+          },
+          {
+            name: "Weeks 11–12: Portfolio Teasers",
+            tasks: [
+              "Post X thread (e.g., 'Portfolio UI tips')",
+              "Follow 5 Gulf clients on X",
+              "Share LinkedIn project post (e.g., 'App demo')",
+              "Send 1 DM",
+              "Create 2 Instagram/TikTok reels (portfolio teaser)",
+              "Create case study, polish Odin project (e.g., Library)",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Phase 3: Authority & Client Funnel (Weeks 13–18)",
+        period: "Mid Dec 2025–Feb 2026",
+        intro: "Establish yourself as an authority by sharing case studies and client-focused content. Post detailed threads on X and LinkedIn about portfolio projects (e.g., Halal Travel Planner). Create reels showcasing your portfolio to attract Gulf clients. Refine DM templates and pitches using Google Sheets and Grok feedback. Engage with Gulf founders and agencies to build trust. Aim for 500 X followers, 900 LinkedIn connections, and 300 Instagram/TikTok followers. This phase positions you for 1–2 test gigs on Upwork/Mostaql by Feb 2026.",
+        weeks: [
+          {
+            name: "Weeks 13–14: Case Studies",
+            tasks: [
+              "Post X thread (e.g., 'Next.js app case study')",
+              "Engage 2 Gulf founders on X",
+              "Share LinkedIn case study (e.g., 'UI project')",
+              "Send 1 DM",
+              "Create 3 Instagram/TikTok reels (portfolio showcase)",
+              "Practice case study pitch",
+            ],
+          },
+          {
+            name: "Weeks 15–16: Client Engagement",
+            tasks: [
+              "Post X tweet (e.g., 'Client UI tips')",
+              "Comment on 2 Gulf posts on X",
+              "Share LinkedIn case study",
+              "Send 1 DM",
+              "Create 3 Instagram/TikTok reels (client-oriented tips)",
+              "Draft 3rd DM template",
+            ],
+          },
+          {
+            name: "Weeks 17–18: Funnel Activation",
+            tasks: [
+              "Post X thread (e.g., 'Portfolio showcase')",
+              "Engage 2 Gulf agencies on X",
+              "Share LinkedIn case study",
+              "Send 2 DMs",
+              "Create 3 Instagram/TikTok reels (portfolio pitch video)",
+              "Practice pitch for Upwork/Mostaql",
+            ],
+          },
+        ],
+      },
+    ];
+
+    // Initialize tracker
+    const app = document.getElementById("app");
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+    const phasesContainer = document.getElementById("phases");
+
+    // Load saved progress from local storage
+    let progress = JSON.parse(localStorage.getItem("networkingProgress")) || {};
+
+    // Set default collapsed state for all phases
+    phases.forEach((_, index) => {
+      if (!(`collapsed-${index}` in progress)) {
+        progress[`collapsed-${index}`] = true;
+      }
+    });
+
+    // Render phases
+    function renderPhases() {
+      phasesContainer.innerHTML = "";
+      let totalTasks = 0;
+      let completedTasks = 0;
+
+      phases.forEach((phase, phaseIndex) => {
+        totalTasks += phase.weeks.reduce((sum, week) => sum + week.tasks.length, 0);
+        let phaseCompletedTasks = 0;
+
+        const phaseCard = document.createElement("div");
+        phaseCard.className = `phase-card ${progress[`collapsed-${phaseIndex}`] ? "collapsed" : ""}`;
+        phaseCard.innerHTML = `
+          <h3 class="text-lg toggle-btn">${phase.name} (${phase.period})</h3>
+          <div class="tasks">
+            <p class="intro-note">${phase.intro}</p>
+            ${phase.weeks
+              .map((week, weekIndex) => {
+                const weekCompletedTasks = week.tasks.filter((_, taskIndex) => progress[`${phaseIndex}-${weekIndex}-${taskIndex}`]).length;
+                const weekProgress = Math.round((weekCompletedTasks / week.tasks.length) * 100);
+                phaseCompletedTasks += weekCompletedTasks;
+                return `
+                  <div class="week-section">
+                    <h4>${week.name}</h4>
+                    <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+                      <div class="sub-progress-bar h-3 rounded-full" style="width: ${weekProgress}%"></div>
+                    </div>
+                    <ul class="space-y-2">
+                      ${week.tasks
+                        .map(
+                          (task, taskIndex) => `
+                        <li class="task-item">
+                          <input type="checkbox" id="task-${phaseIndex}-${weekIndex}-${taskIndex}" ${
+                            progress[`${phaseIndex}-${weekIndex}-${taskIndex}`] ? "checked" : ""
+                          }>
+                          <label for="task-${phaseIndex}-${weekIndex}-${taskIndex}">${task}</label>
+                        </li>
+                      `
+                        )
+                        .join("")}
+                    </ul>
+                  </div>
+                `;
+              })
+              .join("")}
+          </div>
+        `;
+        phasesContainer.appendChild(phaseCard);
+        completedTasks += phaseCompletedTasks;
+      });
+
+      // Update main progress bar and text
+      const progressPercentage = Math.round((completedTasks / totalTasks) * 100);
+      progressBar.style.width = `${progressPercentage}%`;
+      progressText.textContent = `${progressPercentage}% Complete (${completedTasks}/${totalTasks} tasks)`;
+    }
+
+    // Handle click events
+    phasesContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("toggle-btn")) {
+        const phaseCard = e.target.closest(".phase-card");
+        const phaseIndex = Array.from(phasesContainer.children).indexOf(phaseCard);
+        const isExpanding = phaseCard.classList.contains("collapsed");
+        phaseCard.classList.toggle("collapsed");
+        progress[`collapsed-${phaseIndex}`] = phaseCard.classList.contains("collapsed");
+
+        // Auto-collapse others if expanding this one
+        if (isExpanding) {
+          Array.from(phasesContainer.children).forEach((otherCard, otherIndex) => {
+            if (otherIndex !== phaseIndex) {
+              otherCard.classList.add("collapsed");
+              progress[`collapsed-${otherIndex}`] = true;
+            }
+          });
+        }
+        localStorage.setItem("networkingProgress", JSON.stringify(progress));
+        renderPhases();
+      } else if (e.target.type === "checkbox") {
+        const [_, phaseIndex, weekIndex, taskIndex] = e.target.id.split("-");
+        progress[`${phaseIndex}-${weekIndex}-${taskIndex}`] = e.target.checked;
+        localStorage.setItem("networkingProgress", JSON.stringify(progress));
+        renderPhases();
+      }
+    });
+
+    // Initial render
+    renderPhases();
+  </script>
 </body>
 </html>

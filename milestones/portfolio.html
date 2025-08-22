@@ -2,11 +2,359 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Plan Tracker</title>
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Google Fonts for Arabic -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #fef3c7, #fef9c3); /* Cream to light gold */
+      font-family: 'Poppins', 'Noto Sans Arabic', sans-serif;
+      color: #1f2937;
+    }
+
+    body.rtl {
+      direction: rtl;
+      text-align: right;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Noto Sans Arabic', 'Poppins', sans-serif;
+      color: #0f766e; /* Rich teal */
+    }
+
+    .hero {
+      background: linear-gradient(to right, #0f766e, #2dd4bf); /* Teal gradient */
+      padding: 5rem 1rem;
+      text-align: center;
+      border-bottom: 6px solid #ca8a04; /* Gold accent */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fef3c7; /* Cream text */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      color: #fef9c3;
+      font-size: 1.2rem;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      border-left: 5px solid #ca8a04; /* Gold border */
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .project-card.collapsed .tasks {
+      display: none;
+    }
+
+    .project-card .toggle-btn {
+      cursor: pointer;
+      color: #0f766e;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .project-card .toggle-btn::after {
+      content: '▼';
+      font-size: 0.8rem;
+    }
+
+    .project-card.collapsed .toggle-btn::after {
+      content: '▶';
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .task-item input[type="checkbox"] {
+      accent-color: #0f766e;
+    }
+
+    .progress-bar {
+      transition: width 0.3s ease;
+      background-color: #0f766e;
+    }
+
+    .sub-progress-bar {
+      background-color: #2dd4bf;
+    }
+
+    .intro-note {
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 3rem 1rem;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .project-card {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
-<body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+<body class="font-sans" dir="ltr" id="app">
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1 data-en="Your Gulf-Focused Portfolio Journey" data-ar="رحلة محفظتك المركزة على الخليج">Your Gulf-Focused Portfolio Journey</h1>
+    <p data-en="Track 6 projects to become a top freelancer by Sep 2026" data-ar="تتبع 6 مشاريع لتصبح مستقلاً متميزًا بحلول سبتمبر 2026">
+      Track 6 projects to become a top freelancer by Sep 2026
+    </p>
+    <button id="lang-toggle" class="mt-4 px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">
+      Switch to Arabic
+    </button>
+  </div>
+
+  <!-- Main Tracker -->
+  <div class="container mx-auto p-6 max-w-3xl">
+    <!-- Progress Summary -->
+    <div class="mb-8 bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4" data-en="Overall Progress" data-ar="التقدم العام">Overall Progress</h2>
+      <div class="w-full bg-gray-200 rounded-full h-4">
+        <div id="progress-bar" class="progress-bar h-4 rounded-full" style="width: 0%"></div>
+      </div>
+      <p id="progress-text" class="mt-2 text-gray-700" data-en="0% Complete (0/24 tasks)" data-ar="0% مكتمل (0/24 مهمة)">0% Complete (0/24 tasks)</p>
+    </div>
+
+    <!-- Projects -->
+    <div id="projects" class="space-y-4">
+      <!-- Project cards populated by JS -->
+    </div>
+  </div>
+
+  <script>
+    // Project data
+    const projects = [
+      {
+        name: { en: "FSO Blog List (Polish)", ar: "قائمة المدونات FSO (تلميع)" },
+        period: { en: "Feb 1–10, 2026", ar: "1-10 فبراير 2026" },
+        intro: {
+          en: "Polish the Full Stack Open Blog List app into a modern, bilingual platform. Refactor it to Next.js and TypeScript for better performance. Add Arabic content, like Gulf tech blogs, to appeal to regional clients. Integrate Firebase for secure user authentication. Deploy on Vercel with RTL support for accessibility. This project showcases full-stack skills (React, Node, MongoDB). It’s a foundation for your portfolio, demonstrating your ability to enhance existing apps. Estimated client value: $300–$600.",
+          ar: "تلميع تطبيق قائمة المدونات من Full Stack Open ليصبح منصة حديثة ثنائية اللغة. إعادة هيكلته إلى Next.js وTypeScript لتحسين الأداء. إضافة محتوى عربي، مثل مدونات تقنية الخليج، لجذب العملاء الإقليميين. دمج Firebase لتأمين مصادقة المستخدم. النشر على Vercel مع دعم RTL لسهولة الوصول. يعرض هذا المشروع مهارات التطوير الشاملة (React، Node، MongoDB). يشكل أساس محفظتك، ويظهر قدرتك على تحسين التطبيقات. القيمة المقدرة للعملاء: 300-600 دولار."
+        },
+        tasks: [
+          { en: "Refactor to Next.js + TypeScript", ar: "إعادة هيكلة إلى Next.js + TypeScript" },
+          { en: "Add Arabic content and RTL", ar: "إضافة محتوى عربي وRTL" },
+          { en: "Integrate Firebase auth", ar: "دمج مصادقة Firebase" },
+          { en: "Deploy on Vercel", ar: "النشر على Vercel" },
+        ],
+      },
+      {
+        name: { en: "Personal Portfolio Website", ar: "موقع المحفظة الشخصية" },
+        period: { en: "Feb 11–20, 2026", ar: "11-20 فبراير 2026" },
+        intro: {
+          en: "Create a professional portfolio website to showcase your projects and skills. Built with Next.js and TypeScript, it will feature a sleek UI with project demos, a blog section, and a contact form. Support Arabic/English with RTL for Gulf clients. Deploy on Vercel for fast performance. This site is your digital business card, attracting clients in tourism, edtech, and tech. Estimated client value: $500–$1000.",
+          ar: "إنشاء موقع محفظة احترافي لعرض مشاريعك ومهاراتك. يُبنى باستخدام Next.js وTypeScript، مع واجهة أنيقة تعرض عروض المشاريع، قسم مدونة، ونموذج اتصال. يدعم العربية/الإنجليزية مع RTL للعملاء في الخليج. النشر على Vercel لأداء سريع. هذا الموقع هو بطاقتك الرقمية، يجذب العملاء في السياحة، التعليم الإلكتروني، والتكنولوجيا. القيمة المقدرة للعملاء: 500-1000 دولار."
+        },
+        tasks: [
+          { en: "Set up Next.js + TypeScript", ar: "إعداد Next.js + TypeScript" },
+          { en: "Build portfolio UI with project demos", ar: "بناء واجهة المحفظة مع عروض المشاريع" },
+          { en: "Add blog section and contact form", ar: "إضافة قسم المدونة ونموذج الاتصال" },
+          { en: "Deploy with RTL support", ar: "النشر مع دعم RTL" },
+        ],
+      },
+      {
+        name: { en: "Halal Travel Planner", ar: "مخطط السفر الحلال" },
+        period: { en: "Feb 21–Mar 2, 2026", ar: "21 فبراير - 2 مارس 2026" },
+        intro: {
+          en: "Develop a web app for planning Umrah/Hajj or Gulf vacations, targeting Saudi’s Vision 2030 tourism boom. Built with Next.js and TypeScript, it features an itinerary builder, Qibla compass, and prayer times via Aladhan API. Mock hotel data adds realism. Firebase auth ensures secure access. Deploy on Vercel with Arabic RTL support. This app appeals to Gulf travel agencies and startups. Estimated client value: $500–$1000.",
+          ar: "تطوير تطبيق ويب لتخطيط العمرة/الحج أو العطلات في الخليج، يستهدف طفرة السياحة في رؤية السعودية 2030. يُبنى باستخدام Next.js وTypeScript، مع ميزات مثل بناء المسار، بوصلة القبلة، وأوقات الصلاة عبر واجهة Aladhan. بيانات الفنادق التقليدية تضيف واقعية. مصادقة Firebase تضمن الوصول الآمن. النشر على Vercel مع دعم RTL. يجذب وكالات السفر والشركات الناشئة في الخليج. القيمة المقدرة: 500-1000 دولار."
+        },
+        tasks: [
+          { en: "Set up Next.js + TypeScript", ar: "إعداد Next.js + TypeScript" },
+          { en: "Build itinerary UI and Qibla compass", ar: "بناء واجهة المسار وبوصلة القبلة" },
+          { en: "Integrate Aladhan API and mock hotel data", ar: "دمج واجهة Aladhan وتقليد بيانات الفنادق" },
+          { en: "Add Firebase auth and deploy", ar: "إضافة مصادقة Firebase والنشر" },
+        ],
+      },
+      {
+        name: { en: "Arabic Phrase Learner", ar: "تطبيق تعلم العبارات العربية" },
+        period: { en: "Mar 3–12, 2026", ar: "3-12 مارس 2026" },
+        intro: {
+          en: "Build an edtech app for learning Arabic phrases, leveraging your 500-phrase goal. Using Next.js and TypeScript, it offers flashcards, quizzes, and audio playback via Web Speech API. Firebase auth secures user progress. Deploy on Vercel with Arabic RTL support. This app targets Gulf education markets, like UAE’s e-learning sector, and expats. Estimated client value: $600–$1200.",
+          ar: "إنشاء تطبيق تعليمي إلكتروني لتعليم العبارات العربية، مستفيدًا من هدفك بـ 500 عبارة. يستخدم Next.js وTypeScript، ويقدم بطاقات تعليمية، اختبارات، وتشغيل صوتي عبر واجهة Web Speech. مصادقة Firebase تحمي تقدم المستخدم. النشر على Vercel مع دعم RTL. يستهدف أسواق التعليم في الخليج، مثل قطاع التعليم الإلكتروني في الإمارات، والمغتربين. القيمة المقدرة: 600-1200 دولار."
+        },
+        tasks: [
+          { en: "Set up Next.js + TypeScript", ar: "إعداد Next.js + TypeScript" },
+          { en: "Build flashcards and quizzes UI", ar: "بناء واجهة البطاقات التعليمية والاختبارات" },
+          { en: "Integrate Web Speech API for audio", ar: "دمج واجهة Web Speech للصوت" },
+          { en: "Add Firebase auth and deploy", ar: "إضافة مصادقة Firebase والنشر" },
+        ],
+      },
+      {
+        name: { en: "Gulf Job Board", ar: "لوحة وظائف الخليج" },
+        period: { en: "Mar 13–22, 2026", ar: "13-22 مارس 2026" },
+        intro: {
+          en: "Create a platform connecting Gulf freelancers and clients in tech, tourism, and more. Built with Next.js and TypeScript, it features job listings, user profiles, and real-time chat via Firebase. Filters for Gulf-specific roles (e.g., UAE jobs) enhance usability. Deploy on Vercel with RTL support. This mirrors your freelance goals and appeals to Gulf startups. Estimated client value: $700–$1500.",
+          ar: "إنشاء منصة تربط المستقلين في الخليج والعملاء في التكنولوجيا، السياحة، وغيرها. يُبنى باستخدام Next.js وTypeScript، مع قوائم وظائف، ملفات شخصية، ودردشة فورية عبر Firebase. فلاتر للوظائف الخاصة بالخليج (مثل وظائف الإمارات) تعزز سهولة الاستخدام. النشر على Vercel مع دعم RTL. يعكس أهدافك المستقلة ويجذب الشركات الناشئة في الخليج. القيمة المقدرة: 700-1500 دولار."
+        },
+        tasks: [
+          { en: "Set up Next.js + TypeScript", ar: "إعداد Next.js + TypeScript" },
+          { en: "Build job listings and profiles UI", ar: "بناء واجهة قوائم الوظائف والملفات الشخصية" },
+          { en: "Add Firebase chat and filters", ar: "إضافة الدردشة والفلاتر عبر Firebase" },
+          { en: "Deploy with RTL support", ar: "النشر مع دعم RTL" },
+        ],
+      },
+      {
+        name: { en: "Odin & Small Projects Polish", ar: "تلميع مشاريع Odin والصغيرة" },
+        period: { en: "Mar 23–Apr 1, 2026", ar: "23 مارس - 1 أبريل 2026" },
+        intro: {
+          en: "Polish small Odin projects (e.g., Etch-a-Sketch, Rock-Paper-Scissors, Library) and other projects along the way (e.g., FSO Anecdotes, Phonebook if not main). Select 3-5 best ones, refactor with Next.js/TypeScript for modernity. Add Arabic RTL and Gulf-relevant features (e.g., Arabic text in a library app). Integrate into your personal portfolio website. Deploy updates on Vercel. This adds depth to your portfolio, showing progression from basics to advanced. Estimated client value: $400–$800.",
+          ar: "تلميع مشاريع Odin الصغيرة (مثل Etch-a-Sketch، حجر-ورق-مقص، المكتبة) ومشاريع أخرى على الطريق (مثل FSO Anecdotes، دفتر الهاتف إذا لم يكن رئيسيًا). اختيار 3-5 من أفضلها، إعادة هيكلتها بـ Next.js/TypeScript للحداثة. إضافة RTL عربي وميزات ذات صلة بالخليج (مثل نص عربي في تطبيق مكتبة). دمجها في موقع محفظتك الشخصية. نشر التحديثات على Vercel. يضيف هذا عمقًا لمحفظتك، يظهر التقدم من الأساسيات إلى المتقدم. القيمة المقدرة: 400-800 دولار."
+        },
+        tasks: [
+          { en: "Select and refactor best Odin/small projects", ar: "اختيار وإعادة هيكلة أفضل مشاريع Odin/الصغيرة" },
+          { en: "Add Arabic RTL and Gulf features", ar: "إضافة RTL عربي وميزات الخليج" },
+          { en: "Integrate into personal portfolio", ar: "دمج في موقع المحفظة الشخصية" },
+          { en: "Deploy updates on Vercel", ar: "نشر التحديثات على Vercel" },
+        ],
+      },
+    ];
+
+    // Initialize tracker
+    const app = document.getElementById("app");
+    const langToggle = document.getElementById("lang-toggle");
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+    const projectsContainer = document.getElementById("projects");
+    let isArabic = false;
+
+    // Load saved progress from local storage
+    let progress = JSON.parse(localStorage.getItem("portfolioProgress")) || {};
+
+    // Set default collapsed state for all projects
+    projects.forEach((_, index) => {
+      if (!(`collapsed-${index}` in progress)) {
+        progress[`collapsed-${index}`] = true;
+      }
+    });
+
+    // Render projects
+    function renderProjects() {
+      projectsContainer.innerHTML = "";
+      let totalTasks = 0;
+      let completedTasks = 0;
+
+      projects.forEach((project, projectIndex) => {
+        totalTasks += project.tasks.length;
+        let projectCompletedTasks = 0;
+        project.tasks.forEach((_, taskIndex) => {
+          if (progress[`${projectIndex}-${taskIndex}`]) projectCompletedTasks++;
+        });
+        const projectProgress = Math.round((projectCompletedTasks / project.tasks.length) * 100);
+
+        const projectCard = document.createElement("div");
+        projectCard.className = `project-card ${progress[`collapsed-${projectIndex}`] ? "collapsed" : ""}`;
+        projectCard.innerHTML = `
+          <h3 class="text-lg toggle-btn" data-en="${project.name.en} (${project.period.en})" data-ar="${project.name.ar} (${project.period.ar})">
+            ${isArabic ? `${project.name.ar} (${project.period.ar})` : `${project.name.en} (${project.period.en})`}
+          </h3>
+          <div class="tasks">
+            <p class="intro-note" data-en="${project.intro.en}" data-ar="${project.intro.ar}">
+              ${isArabic ? project.intro.ar : project.intro.en}
+            </p>
+            <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+              <div class="sub-progress-bar h-3 rounded-full" style="width: ${projectProgress}%"></div>
+            </div>
+            <ul class="space-y-2">
+              ${project.tasks
+                .map(
+                  (task, taskIndex) => `
+                <li class="task-item">
+                  <input type="checkbox" id="task-${projectIndex}-${taskIndex}" ${
+                    progress[`${projectIndex}-${taskIndex}`] ? "checked" : ""
+                  }>
+                  <label for="task-${projectIndex}-${taskIndex}" data-en="${task.en}" data-ar="${task.ar}">
+                    ${isArabic ? task.ar : task.en}
+                  </label>
+                </li>
+              `
+                )
+                .join("")}
+            </ul>
+          </div>
+        `;
+        projectsContainer.appendChild(projectCard);
+
+        // Count completed tasks
+        project.tasks.forEach((_, taskIndex) => {
+          if (progress[`${projectIndex}-${taskIndex}`]) completedTasks++;
+        });
+      });
+
+      // Update main progress bar and text
+      const progressPercentage = Math.round((completedTasks / totalTasks) * 100);
+      progressBar.style.width = `${progressPercentage}%`;
+      progressText.textContent = isArabic
+        ? `${progressPercentage}% مكتمل (${completedTasks}/${totalTasks} مهمة)`
+        : `${progressPercentage}% Complete (${completedTasks}/${totalTasks} tasks)`;
+    }
+
+    // Handle click events
+    projectsContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("toggle-btn")) {
+        const projectCard = e.target.closest(".project-card");
+        const projectIndex = Array.from(projectsContainer.children).indexOf(projectCard);
+        const isExpanding = projectCard.classList.contains("collapsed");
+        projectCard.classList.toggle("collapsed");
+        progress[`collapsed-${projectIndex}`] = projectCard.classList.contains("collapsed");
+
+        // Auto-collapse others if expanding this one
+        if (isExpanding) {
+          Array.from(projectsContainer.children).forEach((otherCard, otherIndex) => {
+            if (otherIndex !== projectIndex) {
+              otherCard.classList.add("collapsed");
+              progress[`collapsed-${otherIndex}`] = true;
+            }
+          });
+        }
+        localStorage.setItem("portfolioProgress", JSON.stringify(progress));
+        renderProjects();
+      } else if (e.target.type === "checkbox") {
+        const [_, projectIndex, taskIndex] = e.target.id.split("-");
+        progress[`${projectIndex}-${taskIndex}`] = e.target.checked;
+        localStorage.setItem("portfolioProgress", JSON.stringify(progress));
+        renderProjects();
+      }
+    });
+
+    // Toggle language
+    langToggle.addEventListener("click", () => {
+      isArabic = !isArabic;
+      app.setAttribute("dir", isArabic ? "rtl" : "ltr");
+      langToggle.textContent = isArabic ? "Switch to English" : "Switch to Arabic";
+      document.querySelectorAll("[data-en]").forEach((el) => {
+        el.textContent = isArabic ? el.dataset.ar : el.dataset.en;
+      });
+      renderProjects();
+    });
+
+    // Initial render
+    renderProjects();
+  </script>
 </body>
 </html>
