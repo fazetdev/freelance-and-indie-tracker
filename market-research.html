@@ -1,12 +1,555 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Page Title</title>
-  <link rel="stylesheet" href="../style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research & Outreach Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50; /* Navy Blue */
+            --secondary-color: #34495e; /* Dark Gray */
+            --accent-color: #f1c40f; /* Gold */
+            --background-color: #f8f9fa; /* Light Gray */
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #7f8c8d;
+            --border-color: #e0e6e9;
+            --progress-bar-color: #2ecc71; /* Emerald Green */
+            --progress-bar-bg: #eaf7f1;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: auto;
+            background: var(--card-background);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--light-text-color);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--progress-bar-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            height: 15px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--progress-bar-color);
+            transition: width 0.4s ease-in-out;
+            border-radius: 15px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+        }
+
+        .phase {
+            margin-bottom: 3rem;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .phase-header h2 {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .week-card {
+            background-color: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .week-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background-color: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .week-header:hover {
+            background-color: #34495e;
+        }
+
+        .week-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .week-tracker {
+            display: flex;
+            align-items: center;
+        }
+
+        .week-progress-container {
+            width: 120px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+
+        .week-progress-bar {
+            background-color: var(--accent-color);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .week-progress-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .dropdown-icon {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .week-card.open .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        .week-content {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+
+        .week-card.open .week-content {
+            max-height: 1000px;
+            padding: 1.5rem 2rem;
+        }
+
+        .week-content h4 {
+            color: var(--primary-color);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: background-color 0.3s;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: var(--progress-bar-color);
+            border-color: var(--progress-bar-color);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Page Title</h1>
-  <p>Content will go here...</p>
+
+    <div class="container">
+        <h1>18-Week Research & Outreach Plan</h1>
+        <p class="subtitle">From Industry Scouting to Test Projects</p>
+
+        <div class="progress-container">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="main-progress-bar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-text" id="main-progress-text">0% Complete</div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 1: Awareness & Seeds (Weeks 1–6)</h2></div>
+            <div class="week-card" data-week-id="1">
+                <div class="week-header">
+                    <h3>Week 1-2: Industry Scouting</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Identify Gulf niches, start networking, build credibility.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="1-1"><label><input type="checkbox"> Research Upwork/Mostaql (5 postings each).</label></li>
+                        <li data-task-id="1-2"><label><input type="checkbox"> Log 5 companies in Google Sheets.</label></li>
+                        <li data-task-id="1-3"><label><input type="checkbox"> Follow 5 Gulf companies on LinkedIn.</label></li>
+                        <li data-task-id="1-4"><label><input type="checkbox"> Comment on 2 posts.</label></li>
+                        <li data-task-id="1-5"><label><input type="checkbox"> Share learning post on social media.</label></li>
+                        <li data-task-id="1-6"><label><input type="checkbox"> Research Nabbesh (5 postings).</label></li>
+                        <li data-task-id="1-7"><label><input type="checkbox"> Add 5 Arabic phrases to comments.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="2">
+                <div class="week-header">
+                    <h3>Week 3-4: Client Profiling</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Understand client needs and pain points.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="2-1"><label><input type="checkbox"> Research Fiverr/Ureed (5 postings each).</label></li>
+                        <li data-task-id="2-2"><label><input type="checkbox"> Log 5 companies.</label></li>
+                        <li data-task-id="2-3"><label><input type="checkbox"> Follow 5 Gulf freelancers.</label></li>
+                        <li data-task-id="2-4"><label><input type="checkbox"> Comment on 2 posts with Arabic phrases.</label></li>
+                        <li data-task-id="2-5"><label><input type="checkbox"> Share Odin project update.</label></li>
+                        <li data-task-id="2-6"><label><input type="checkbox"> Start client profile doc (pain points).</label></li>
+                        <li data-task-id="2-7"><label><input type="checkbox"> Draft mock proposal (100 words, 5 Arabic phrases).</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="3">
+                <div class="week-header">
+                    <h3>Week 5-6: Early Portfolio</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Build early portfolio projects.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="3-1"><label><input type="checkbox"> Research Bayt/LinkedIn Jobs (5 postings each).</label></li>
+                        <li data-task-id="3-2"><label><input type="checkbox"> Log 5 companies.</label></li>
+                        <li data-task-id="3-3"><label><input type="checkbox"> Adapt Odin project with RTL text.</label></li>
+                        <li data-task-id="3-4"><label><input type="checkbox"> Comment on 2 posts.</label></li>
+                        <li data-task-id="3-5"><label><input type="checkbox"> Screenshot project for portfolio.</label></li>
+                        <li data-task-id="3-6"><label><input type="checkbox"> Share update with Arabic phrase.</label></li>
+                        <li data-task-id="3-7"><label><input type="checkbox"> Practice proposal with italki.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 2: Relationships & Outreach (Weeks 7–12)</h2></div>
+            <div class="week-card" data-week-id="4">
+                <div class="week-header">
+                    <h3>Week 7-8: Deep Research</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Build connections and create valuable mock-ups.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="4-1"><label><input type="checkbox"> Research 10 postings (Upwork/Mostaql/Nabbesh).</label></li>
+                        <li data-task-id="4-2"><label><input type="checkbox"> Update client profile doc (values).</label></li>
+                        <li data-task-id="4-3"><label><input type="checkbox"> Start 1 DM conversation.</label></li>
+                        <li data-task-id="4-4"><label><input type="checkbox"> Comment with Arabic phrase.</label></li>
+                        <li data-task-id="4-5"><label><input type="checkbox"> Create mock-up (e.g., Arabic homepage toggle).</label></li>
+                        <li data-task-id="4-6"><label><input type="checkbox"> Send mock-up to 1 company with Arabic phrases.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="5">
+                <div class="week-header">
+                    <h3>Week 9-10: Micro-Value</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Offer small, valuable contributions to prospects.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="5-1"><label><input type="checkbox"> Research 10 postings (Fiverr/Ureed).</label></li>
+                        <li data-task-id="5-2"><label><input type="checkbox"> Update doc with competitor insights.</label></li>
+                        <li data-task-id="5-3"><label><input type="checkbox"> Start 1 DM conversation.</label></li>
+                        <li data-task-id="5-4"><label><input type="checkbox"> Comment on 2 posts.</label></li>
+                        <li data-task-id="5-5"><label><input type="checkbox"> Adapt 2nd Odin project with RTL.</label></li>
+                        <li data-task-id="5-6"><label><input type="checkbox"> Draft 1st proposal template.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="6">
+                <div class="week-header">
+                    <h3>Week 11-12: Outreach Experiments</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Test different outreach methods.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="6-1"><label><input type="checkbox"> Research 10 postings (Bayt/LinkedIn).</label></li>
+                        <li data-task-id="6-2"><label><input type="checkbox"> Update doc with pain points.</label></li>
+                        <li data-task-id="6-3"><label><input type="checkbox"> Send mock-up to 1 company.</label></li>
+                        <li data-task-id="6-4"><label><input type="checkbox"> Comment with Arabic phrase.</label></li>
+                        <li data-task-id="6-5"><label><input type="checkbox"> Draft 1-min bilingual pitch script.</label></li>
+                        <li data-task-id="6-6"><label><input type="checkbox"> Practice pitch with italki.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header"><h2>Phase 3: Positioning & Test Projects (Weeks 13–18)</h2></div>
+            <div class="week-card" data-week-id="7">
+                <div class="week-header">
+                    <h3>Week 13-14: Sharpen Outreach</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Refine outreach and portfolio assets.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="7-1"><label><input type="checkbox"> Highlight 10 prospects in Sheets.</label></li>
+                        <li data-task-id="7-2"><label><input type="checkbox"> Draft 2nd proposal template.</label></li>
+                        <li data-task-id="7-3"><label><input type="checkbox"> Send 1 DM offering free project.</label></li>
+                        <li data-task-id="7-4"><label><input type="checkbox"> Comment on 2 posts.</label></li>
+                        <li data-task-id="7-5"><label><input type="checkbox"> Post mini case study.</label></li>
+                        <li data-task-id="7-6"><label><input type="checkbox"> Practice DM with italki.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="8">
+                <div class="week-header">
+                    <h3>Week 15-16: Proactive Outreach</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Actively pursue test projects.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="8-1"><label><input type="checkbox"> Track 5 prospect responses in Sheets.</label></li>
+                        <li data-task-id="8-2"><label><input type="checkbox"> Draft 3rd proposal template.</label></li>
+                        <li data-task-id="8-3"><label><input type="checkbox"> Send 1 DM for discounted project.</label></li>
+                        <li data-task-id="8-4"><label><input type="checkbox"> Comment with Arabic phrase.</label></li>
+                        <li data-task-id="8-5"><label><input type="checkbox"> Adapt 3rd Odin project with RTL.</label></li>
+                        <li data-task-id="8-6"><label><input type="checkbox"> Draft 2nd pitch script.</label></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="week-card" data-week-id="9">
+                <div class="week-header">
+                    <h3>Week 17-18: Final Positioning</h3>
+                    <div class="week-tracker">
+                        <div class="week-progress-container"><div class="week-progress-bar"></div></div>
+                        <div class="week-progress-text">0%</div>
+                        <span class="dropdown-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <h4>Goal:</h4>
+                    <p>Finalize profiles and pitch assets.</p>
+                    <h4>Tasks:</h4>
+                    <ul>
+                        <li data-task-id="9-1"><label><input type="checkbox"> Finalize Upwork/Mostaql/Nabbesh profiles.</label></li>
+                        <li data-task-id="9-2"><label><input type="checkbox"> Update client doc.</label></li>
+                        <li data-task-id="9-3"><label><input type="checkbox"> Send 2 DMs for test projects.</label></li>
+                        <li data-task-id="9-4"><label><input type="checkbox"> Post bilingual case study.</label></li>
+                        <li data-task-id="9-5"><label><input type="checkbox"> Record 2-min bilingual pitch video.</label></li>
+                        <li data-task-id="9-6"><label><input type="checkbox"> Share on LinkedIn/X.</label></li>
+                        <li data-task-id="9-7"><label><input type="checkbox"> Practice pitch with italki.</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const weeks = document.querySelectorAll('.week-card');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const mainProgressBar = document.getElementById('main-progress-bar');
+            const mainProgressText = document.getElementById('main-progress-text');
+
+            loadState();
+
+            weeks.forEach(week => {
+                week.querySelector('.week-header').addEventListener('click', () => {
+                    week.classList.toggle('open');
+                });
+            });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateProgress();
+                    saveState();
+                });
+            });
+
+            updateProgress();
+
+            function updateProgress() {
+                weeks.forEach(week => {
+                    const weekCheckboxes = week.querySelectorAll('input[type="checkbox"]');
+                    const totalTasks = weekCheckboxes.length;
+                    if (totalTasks === 0) return;
+
+                    const completedTasks = Array.from(weekCheckboxes).filter(cb => cb.checked).length;
+                    const percentage = (completedTasks / totalTasks) * 100;
+
+                    const progressBar = week.querySelector('.week-progress-bar');
+                    const progressText = week.querySelector('.week-progress-text');
+                    progressBar.style.width = `${percentage}%`;
+                    progressText.textContent = `${Math.round(percentage)}%`;
+                });
+
+                const totalTasks = checkboxes.length;
+                const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const mainPercentage = (completedTasks / totalTasks) * 100;
+                
+                mainProgressBar.style.width = `${mainPercentage}%`;
+                mainProgressText.textContent = `${Math.round(mainPercentage)}% Complete`;
+            }
+
+            function saveState() {
+                const state = {};
+                checkboxes.forEach(checkbox => {
+                    const taskListItem = checkbox.closest('li');
+                    if (taskListItem) {
+                        const taskId = taskListItem.dataset.taskId;
+                        if (taskId) {
+                            state[taskId] = checkbox.checked;
+                        }
+                    }
+                });
+                localStorage.setItem('researchPlanState', JSON.stringify(state));
+            }
+
+            function loadState() {
+                const storedState = localStorage.getItem('researchPlanState');
+                if (storedState) {
+                    const state = JSON.parse(storedState);
+                    checkboxes.forEach(checkbox => {
+                        const taskListItem = checkbox.closest('li');
+                        if (taskListItem) {
+                            const taskId = taskListItem.dataset.taskId;
+                            if (taskId && state[taskId]) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>

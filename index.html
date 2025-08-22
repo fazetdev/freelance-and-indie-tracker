@@ -1,53 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Freelance & Indie Preparation Plan</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Freelance & Indie Tracker - Faruk's Journey</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>Freelance & Indie Preparation Plan</h1>
-    <p><strong>Goal:</strong> Leave teaching job insha'Allah by Sept 2026 and become a freelancer & indie developer focused on Middle East and Gulf countries.</p>
-  </header>
+    <div class="container">
+        <header role="banner">
+            <div class="hero-left">
+                <span class="arabic">رحلة فاروق إلى الاستقلال المهني</span>
+                <h1>Freelance & Indie Tracker — Faruk's Journey</h1>
+                <p class="lead">
+                    Leave teaching and become a web dev freelancer focused on Gulf &
+                    Middle East clients by Sep 2026 — Odin & FSO are the core
+                    milestones. Track daily progress, milestones, and business prep all
+                    in one place.
+                </p>
+                <div style="margin-top: 12px">
+                    <a class="cta-button" href="#continuous"
+                        ><i class="fas fa-rocket"></i> View My Plan</a
+                    >
+                    <a
+                        class="cta-button"
+                        href="#contact"
+                        style="
+                            margin-left: 10px;
+                            background: transparent;
+                            color: #fff;
+                            border: 1px solid rgba(255, 255, 255, 0.12);
+                            box-shadow: none;
+                        "
+                    >Contact</a
+                    >
+                </div>
+            </div>
 
-  <main>
-    <section>
-      <h2>What It Takes</h2>
-        
-        <li><a href="https://www.theodinproject.com/dashboard">finished TOP </a><strong>Sept 9</strong></li>
-        <li><a href="milestones/fso.html">Full Stack Open</a> on Sept 16 → finish by Oct 27 (6 weeks)</li>
-        <li><a href="milestones/arabic-uiux.html">Arabic UI/UX</a> from Nov 3 – Dec 15</li>
-        <li><a href="milestones/typescript-next.html">TypeScript & Next.js</a> from Dec 22 – Jan 12</li>
-        <li><a href="milestones/portfolio.html">Portfolio building</a> → Feb 2026 (depends)</li>
-      </ul>
-    </section>
+            <div class="hero-right">
+                <div class="meta">Goal: Freelance in Gulf — target Sep 2026</div>
+                <div style="height: 12px"></div>
+                <div style="color: rgba(255, 255, 255, 0.86); margin-top: 10px; font-size: 0.95rem">
+                    Core milestones:<br />
+                    <strong>Odin → FSO → Arabic UI/UX → TypeScript & Next.js → Portfolio</strong>
+                </div>
+            </div>
+        </header>
 
-    <section>
-      <h2>Continuous Goals</h2>
-      <ul>
-        <li><a href="continous/english-c1.html">Reach C1 English</a> (Aug 25 – Jan 12)</li>
-        <li><a href="continous/arabic-500.html">Foundational Arabic: 500 phrases & vocab</a></li>
-        <li><a href="continous/market-research.html">Market Research & Client Acquisition</a></li>
-        <li><a href="continous/networking.html">Networking: Build visibility</a></li>
-        <li><a href="continous/business-skills.html">Business Skills</a>: Pricing, negotiation, proposals</li>
-        <li><a href="continous/client-handling.html">Client Handling & Project Management</a></li>
-        <li><a href="continous/ai.html">AI Skills</a></li>
-      </ul>
-    </section>
+        <section aria-labelledby="overall-title">
+            <h2 id="overall-title">Overall Progress</h2>
+            <div class="card">
+                <div class="meta-row">
+                    <div>
+                        <h3>Total Completion</h3>
+                        <p>Progress across all tasks and milestones.</p>
+                    </div>
+                    <div class="countdown" id="overall-countdown">Target: Sep 2026</div>
+                </div>
+                <!-- This section is no longer collapsible -->
+                <div class="collapsible-content" data-collapsible="overall-tracker">
+                    <div class="progress-container">
+                        <div class="progress-bar-container"><div class="progress-bar" id="overall-progress-bar"></div></div>
+                        <div class="progress-text" id="overall-progress-text">0% Complete</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section>
-      <h2>One-Time Setup</h2>
-      <ul>
-        <li><a href="one-time/legal.html">Legal</a>: Register as Sole Proprietorship (CAC)</li>
-        <li><a href="one-time/financial.html">Financial</a>: TIN, PIT, VAT, domiciliary account, savings plan</li>
-        <li><a href="one-time/setup.html">Other Setup Tasks</a></li>
-      </ul>
-    </section>
-  </main>
+        <section id="continuous" aria-labelledby="continuous-title">
+            <h2 id="continuous-title">Continuous Tasks & Milestones</h2>
 
-  <footer>
-    <p>🚀 Tracked with Freelance & Indie Preparation Plan | Updated 2025</p>
-  </footer>
+            <div class="grid">
+                <!-- The Odin Project Card -->
+                <div class="card" data-task-group="odin">
+                    <div class="meta-row">
+                        <div>
+                            <h3>The Odin Project</h3>
+                            <p>Complete by Sep 9, 2025</p>
+                        </div>
+                        <div class="countdown" id="odin-countdown">Days remaining: Calculating...</div>
+                        <button class="toggle-button collapsed" data-target="odin-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="odin-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="odin"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="odin">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="odin-1" type="checkbox" /> Complete Foundations module</label></li>
+                                <li><label><input id="odin-2" type="checkbox" /> Build 3 portfolio projects</label></li>
+                                <li><label><input id="odin-3" type="checkbox" /> Practice JavaScript challenges</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="milestones/odin-foundations.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Full Stack Open (FSO) Card -->
+                <div class="card" data-task-group="fso">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Full Stack Open (FSO)</h3>
+                            <p>Sep 16 - Oct 27, 2025</p>
+                        </div>
+                        <div class="countdown" id="fso-countdown">Days remaining: Calculating...</div>
+                        <button class="toggle-button collapsed" data-target="fso-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="fso-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="fso"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="fso">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="fso-1" type="checkbox" /> Complete React basics</label></li>
+                                <li><label><input id="fso-2" type="checkbox" /> Learn Node.js and Express</label></li>
+                                <li><label><input id="fso-3" type="checkbox" /> Build full-stack app</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="milestones/fso.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Arabic UI/UX Card -->
+                <div class="card" data-task-group="arabic-uiux">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Arabic UI/UX</h3>
+                            <p>Nov 3 - Dec 15, 2025</p>
+                        </div>
+                        <div class="countdown" id="uiux-countdown">Days remaining: Calculating...</div>
+                        <button class="toggle-button collapsed" data-target="uiux-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="uiux-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="arabic-uiux"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="arabic-uiux">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="uiux-1" type="checkbox" /> Study UI/UX principles</label></li>
+                                <li><label><input id="uiux-2" type="checkbox" /> Design bilingual prototype</label></li>
+                                <li><label><input id="uiux-3" type="checkbox" /> Test with Gulf users</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="milestones/arabic-uiux.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- TypeScript & Next.js Card -->
+                <div class="card" data-task-group="typescript-next">
+                    <div class="meta-row">
+                        <div>
+                            <h3>TypeScript & Next.js</h3>
+                            <p>Dec 22, 2025 - Jan 12, 2026</p>
+                        </div>
+                        <div class="countdown" id="ts-next-countdown">Days remaining: Calculating...</div>
+                        <button class="toggle-button collapsed" data-target="ts-next-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="ts-next-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="typescript-next"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="typescript-next">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="ts-next-1" type="checkbox" /> Learn TypeScript basics</label></li>
+                                <li><label><input id="ts-next-2" type="checkbox" /> Build Next.js app</label></li>
+                                <li><label><input id="ts-next-3" type="checkbox" /> Deploy to Vercel</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="milestones/typescript-next.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Portfolio Building Card -->
+                <div class="card" data-task-group="portfolio">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Portfolio Building</h3>
+                            <p>Feb 2026 (TBD)</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Target: Feb 2026</div>
+                        <button class="toggle-button collapsed" data-target="portfolio-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="portfolio-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="portfolio"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="portfolio">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="portfolio-1" type="checkbox" /> Select 3-5 projects</label></li>
+                                <li><label><input id="portfolio-2" type="checkbox" /> Design portfolio site</label></li>
+                                <li><label><input id="portfolio-3" type="checkbox" /> Add bilingual content</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="milestones/portfolio.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- AI Card -->
+                <div class="card" data-task-group="ai">
+                    <div class="meta-row">
+                        <div>
+                            <h3>AI Integration</h3>
+                            <p>Exploring AI tools for development</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="ai-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="ai-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="ai"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="ai">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="ai-1" type="checkbox" /> Research AI coding tools</label></li>
+                                <li><label><input id="ai-2" type="checkbox" /> Implement AI for a project</label></li>
+                                <li><label><input id="ai-3" type="checkbox" /> Document AI usage</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="ai.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- C1 English Card -->
+                <div class="card" data-task-group="english">
+                    <div class="meta-row">
+                        <div>
+                            <h3>C1 English</h3>
+                            <p>Aug 25, 2025 - Jan 12, 2026</p>
+                        </div>
+                        <div class="countdown" id="english-countdown">Days remaining: Calculating...</div>
+                        <button class="toggle-button collapsed" data-target="english-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="english-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="english"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="english">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="english-1" type="checkbox" /> Practice advanced grammar</label></li>
+                                <li><label><input id="english-2" type="checkbox" /> Write client emails</label></li>
+                                <li><label><input id="english-3" type="checkbox" /> Take C1 mock test</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="continuous/english-c1.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- 500 Arabic Phrases Card -->
+                <div class="card" data-task-group="arabic">
+                    <div class="meta-row">
+                        <div>
+                            <h3>500 Arabic Phrases</h3>
+                            <p>Foundational Arabic vocabulary</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="arabic-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="arabic-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="arabic"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="arabic">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="arabic-1" type="checkbox" /> Learn 100 phrases</label></li>
+                                <li><label><input id="arabic-2" type="checkbox" /> Practice with tutor</label></li>
+                                <li><label><input id="arabic-3" type="checkbox" /> Use in proposals</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="continuous/arabic-500.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Market Research Card -->
+                <div class="card" data-task-group="market-research">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Market Research & Client Acquisition</h3>
+                            <p>Identify industries and platforms</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="market-research-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="market-research-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="market-research"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="market-research">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="market-1" type="checkbox" /> Analyze Mostaql / Upwork</label></li>
+                                <li><label><input id="market-2" type="checkbox" /> Identify Gulf industries</label></li>
+                                <li><label><input id="market-3" type="checkbox" /> Build client list</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="continuous/market-research.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Networking Card -->
+                <div class="card" data-task-group="networking">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Networking</h3>
+                            <p>Build visibility now</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="networking-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="networking-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="networking"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="networking">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="networking-1" type="checkbox" /> Post on X weekly</label></li>
+                                <li><label><input id="networking-2" type="checkbox" /> Join Discord groups</label></li>
+                                <li><label><input id="networking-3" type="checkbox" /> Attend virtual meetups</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="continuous/networking.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Business Skills Card -->
+                <div class="card" data-task-group="business-skills">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Business Skills</h3>
+                            <p>Pricing, negotiation, proposals</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="business-skills-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="business-skills-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="business-skills"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="business-skills">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="business-1" type="checkbox" /> Study pricing strategies</label></li>
+                                <li><label><input id="business-2" type="checkbox" /> Practice negotiation</label></li>
+                                <li><label><input id="business-3" type="checkbox" /> Draft 3 proposals</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="continuous/business-skills.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Financial Setup Card -->
+                <div class="card" data-task-group="financial">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Financial Setup</h3>
+                            <p>Banking and tax prep</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="financial-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="financial-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="financial"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="financial">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="financial-1" type="checkbox" /> Open a business bank account</label></li>
+                                <li><label><input id="financial-2" type="checkbox" /> Research tax obligations</label></li>
+                                <li><label><input id="financial-3" type="checkbox" /> Set up invoicing software</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="one-time/financial.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Legal Setup Card -->
+                <div class="card" data-task-group="legal">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Legal Setup</h3>
+                            <p>Contracts and registrations</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="legal-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="legal-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="legal"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="legal">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="legal-1" type="checkbox" /> Register as a freelance business</label></li>
+                                <li><label><input id="legal-2" type="checkbox" /> Draft a client contract template</label></li>
+                                <li><label><input id="legal-3" type="checkbox" /> Secure business insurance (if needed)</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="one-time/legal.html">Track Progress</a>
+                    </div>
+                </div>
+
+                <!-- Client Handling Card -->
+                <div class="card" data-task-group="client-handling">
+                    <div class="meta-row">
+                        <div>
+                            <h3>Client Handling</h3>
+                            <p>Workflow and communication</p>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--light-text)">Ongoing</div>
+                        <button class="toggle-button collapsed" data-target="client-handling-content">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapsible-content collapsed" data-collapsible="client-handling-content">
+                        <div class="progress-container">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" data-progress-bar="client-handling"></div>
+                            </div>
+                            <div class="progress-text" data-progress-text="client-handling">0% Complete</div>
+                        </div>
+                        <div class="task-list">
+                            <ul>
+                                <li><label><input id="client-handling-1" type="checkbox" /> Create a client onboarding checklist</label></li>
+                                <li><label><input id="client-handling-2" type="checkbox" /> Set up a project management tool</label></li>
+                                <li><label><input id="client-handling-3" type="checkbox" /> Develop a client feedback form</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="links-row">
+                        <i class="fas fa-link"></i><a href="continuous/client-handling.html">Track Progress</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer role="contentinfo">
+            <p>© 2025 Faruk's Journey. All Rights Reserved.</p>
+        </footer>
+    </div>
 </body>
 </html>
