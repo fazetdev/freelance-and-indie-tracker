@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Progress Bar & Countdown Logic ---
     const milestones = {
         "odin": { endDate: new Date("2025-09-09T00:00:00") },
-        "fso": { endDate: new Date("2025-10-27T00:00:00") },
+        "fso": { endDate: new Date("2025-10-20T00:00:00") },   // updated
         "arabic-uiux": { endDate: new Date("2025-12-15T00:00:00") },
-        "typescript-next": { endDate: new Date("2026-01-12T00:00:00") },
+        "typescript-next": { endDate: new Date("2026-01-12T00:00:00") }, // 4 weeks
         "portfolio": { endDate: null },
         "ai": { endDate: null },
-        "english": { endDate: new Date("2026-01-12T00:00:00") },
+        "english": { endDate: new Date("2026-01-12T00:00:00") }, // aligned
         "arabic": { endDate: null },
         "market-research": { endDate: null },
         "networking": { endDate: null },
@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "legal": { endDate: null },
         "client-handling": { endDate: null }
     };
+    
     
     const updateProgress = (groupName) => {
         const groupElement = document.querySelector(`[data-task-group="${groupName}"]`);
