@@ -13,25 +13,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // --- Progress Bar & Countdown Logic ---
+    // --- Milestones ---
     const milestones = {
-        "odin": { endDate: new Date("2025-09-09T00:00:00") },
-        "fso": { endDate: new Date("2025-10-20T00:00:00") },   // updated
-        "arabic-uiux": { endDate: new Date("2025-12-15T00:00:00") },
-        "typescript-next": { endDate: new Date("2026-01-12T00:00:00") }, // 4 weeks
-        "portfolio": { endDate: null },
-        "ai": { endDate: null },
-        "english": { endDate: new Date("2026-01-12T00:00:00") }, // aligned
-        "arabic": { endDate: null },
-        "market-research": { endDate: null },
-        "networking": { endDate: null },
-        "business-skills": { endDate: null },
-        "financial": { endDate: null },
-        "legal": { endDate: null },
-        "client-handling": { endDate: null }
+        "odin": { endDate: new Date("2025-11-02T00:00:00") },
+        "fso": { endDate: new Date("2025-12-17T00:00:00") },
+        "arabic-uiux": { endDate: new Date("2026-02-01T00:00:00") },
+        "typescript-next": { endDate: new Date("2026-03-04T00:00:00") },
+        "portfolio": { endDate: new Date("2026-04-19T00:00:00") },
+
+        // previously null → set to one week before portfolio
+        "ai": { endDate: new Date("2026-03-01T00:00:00") },
+        "english": { endDate: new Date("2026-01-12T00:00:00") },
+        "arabic": { endDate: new Date("2026-03-01T00:00:00") },
+        "market-research": { endDate: new Date("2026-03-01T00:00:00") },
+        "networking": { endDate: new Date("2026-03-01T00:00:00") },
+        "business-skills": { endDate: new Date("2026-03-01T00:00:00") },
+        "financial": { endDate: new Date("2026-03-01T00:00:00") },
+        "legal": { endDate: new Date("2026-03-01T00:00:00") },
+        "client-handling": { endDate: new Date("2026-03-01T00:00:00") }
     };
-    
-    
+
+    // --- Update Individual Progress ---
     const updateProgress = (groupName) => {
         const groupElement = document.querySelector(`[data-task-group="${groupName}"]`);
         if (!groupElement) return;
@@ -43,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
         const progressPercentage = (completedTasks / totalTasks) * 100;
 
-        const progressBar = groupElement.querySelector("[data-progress-bar]");
-        const progressText = groupElement.querySelector("[data-progress-text]");
+        const progressBar = groupElement.querySelector(`[data-progress-bar="${groupName}"]`);
+        const progressText = groupElement.querySelector(`[data-progress-text="${groupName}"]`);
 
         if (progressBar) {
             progressBar.style.width = `${progressPercentage}%`;
@@ -54,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // --- Update Overall Progress ---
     const updateOverallProgress = () => {
         const overallProgressBar = document.getElementById("overall-progress-bar");
         const overallProgressText = document.getElementById("overall-progress-text");
@@ -85,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // --- Update Countdowns ---
     const updateCountdowns = () => {
         const now = new Date();
         for (const groupName in milestones) {
@@ -104,19 +108,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         }
+
+        // --- Overall Countdown (Portfolio) ---
         const overallCountdownElement = document.getElementById("overall-countdown");
-        const targetDate = new Date("2026-09-01T00:00:00");
+        const targetDate = milestones["portfolio"].endDate; // dynamically use Portfolio
         const overallTimeRemaining = targetDate.getTime() - now.getTime();
         const overallDays = Math.ceil(overallTimeRemaining / (1000 * 60 * 60 * 24));
         if (overallCountdownElement) {
             if (overallDays > 0) {
                 overallCountdownElement.textContent = `Target: ${overallDays} days left`;
             } else {
-                overallCountdownElement.textContent = `Target: September 2026 (Past)`;
+                overallCountdownElement.textContent = `Target: Completed 🎉`;
             }
         }
     };
 
+    // --- Checkbox Event Listeners ---
     const allCheckboxes = document.querySelectorAll(".task-list input[type='checkbox']");
     allCheckboxes.forEach(checkbox => {
         checkbox.addEventListener("change", (event) => {
@@ -129,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // --- Initial Load ---
     const initialUpdate = () => {
         for (const groupName in milestones) {
             updateProgress(groupName);
@@ -138,5 +146,5 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     initialUpdate();
-    setInterval(updateCountdowns, 60000);
+    setInterval(updateCountdowns, 60000); // refresh countdowns every minute
 });
